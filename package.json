@@ -1,0 +1,17 @@
+{
+  "name": "videolens-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lens — an archive of analysed Instagram fitness and nutrition reels, with the pipeline that builds it.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "serve": "node scripts/serve.js",
+    "export": "python3 pipeline/export_hub.py",
+    "backfill": "bash pipeline/backfill.sh",
+    "check": "python3 pipeline/videolens.py --check"
+  }
+}

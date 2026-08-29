@@ -1,0 +1,2071 @@
+window.HUB = {
+ "generatedAt": "2026-08-29 19:43:10",
+ "creators": [
+  {
+   "username": "anmolraina13",
+   "name": "Anmol Raina",
+   "generatedAt": "2026-08-29 13:09:20",
+   "engine": "openai / gpt-4.1-mini",
+   "counts": {
+    "scraped": 40,
+    "fitness": 30,
+    "dropped": 10,
+    "analysed": 3,
+    "succeeded": 3,
+    "kept": 3,
+    "published": 3
+   },
+   "buckets": [
+    "fitness",
+    "nutrition"
+   ],
+   "mode": "top-n",
+   "droppedSample": [
+    {
+     "shortcode": "DcikRaRNjTz",
+     "reason": "Thumbnail and caption show a person with a non-fitness quote, no training or nutrition content.",
+     "confidence": null
+    },
+    {
+     "shortcode": "DclQSr8Sbug",
+     "reason": "Thumbnail and caption indicate a humorous or meme style video, no fitness content.",
+     "confidence": null
+    },
+    {
+     "shortcode": "DZW_dWIvEMS",
+     "reason": "Thumbnail is a posed photo with caption 'Same T Shirt' and no fitness activity shown.",
+     "confidence": null
+    },
+    {
+     "shortcode": "DciTlO8O4Fq",
+     "reason": "Thumbnail shows a person talking to camera with no clear fitness context, caption is generic appreciation.",
+     "confidence": null
+    },
+    {
+     "shortcode": "Dci47PiB2Jk",
+     "reason": "Thumbnail shows underwater selfie with caption 'Review dropping ASAP', no clear fitness content.",
+     "confidence": null
+    },
+    {
+     "shortcode": "DcTpSZgh7En",
+     "reason": "Thumbnail shows a woman speaking with no fitness context",
+     "confidence": null
+    }
+   ]
+  },
+  {
+   "username": "fit.khurana",
+   "name": "Vanshika Khurana",
+   "generatedAt": "2026-08-29 18:01:23",
+   "engine": "openai / gpt-4.1-mini",
+   "counts": {
+    "scraped": 40,
+    "kept": 35,
+    "kept_fitness": 6,
+    "kept_nutrition": 29,
+    "dropped": 5,
+    "analysed": 3,
+    "succeeded": 3,
+    "rejected_after_watching": 0,
+    "published": 3
+   },
+   "buckets": [
+    "fitness",
+    "nutrition"
+   ],
+   "mode": "top-n",
+   "droppedSample": [
+    {
+     "shortcode": "DOlLET8DOFS",
+     "reason": "Personal life update about quitting job, no training or nutrition content",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "Dbm04VJsm_0",
+     "reason": "Travel food spots list with no training or nutrition focus",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "Db26g6KMTQR",
+     "reason": "Coffee making class, no nutrition or fitness training content",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DbVxETGT6tw",
+     "reason": "Cooking workshop travel content with no training or nutrition focus",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DZ6s1GoMXyZ",
+     "reason": "Haircare routine and product promotion, not about nutrition or fitness training",
+     "confidence": 0.8
+    }
+   ]
+  },
+  {
+   "username": "hustlerani",
+   "name": "Ankita Chawla",
+   "generatedAt": "2026-08-29 18:08:27",
+   "engine": "openai / gpt-4.1-mini",
+   "counts": {
+    "scraped": 40,
+    "kept": 7,
+    "kept_fitness": 2,
+    "kept_nutrition": 5,
+    "dropped": 33,
+    "analysed": 3,
+    "succeeded": 3,
+    "rejected_after_watching": 0,
+    "published": 3
+   },
+   "buckets": [
+    "fitness",
+    "nutrition"
+   ],
+   "mode": "top-n",
+   "droppedSample": [
+    {
+     "shortcode": "Db52ZrGMWOb",
+     "reason": "Event attendance for product launch, no training or nutrition content",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DcYw4uMMWae",
+     "reason": "Caption is vague and thumbnail shows food but no clear nutrition focus",
+     "confidence": 0.7
+    },
+    {
+     "shortcode": "Db3LVo2M31l",
+     "reason": "Caption about questions on a date, no training or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "Db06tHAsM-T",
+     "reason": "Makeup tutorial, not related to fitness or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DcC5Au6sNMl",
+     "reason": "Fashion post about dress and earrings, no fitness or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "Db8I2X-st7K",
+     "reason": "Caption about editor raise, no fitness or nutrition content",
+     "confidence": 0.9
+    }
+   ]
+  },
+  {
+   "username": "overlydaa",
+   "name": "Akshada Patil",
+   "generatedAt": "2026-08-29 18:04:05",
+   "engine": "openai / gpt-4.1-mini",
+   "counts": {
+    "scraped": 40,
+    "kept": 23,
+    "kept_fitness": 22,
+    "kept_nutrition": 1,
+    "dropped": 17,
+    "analysed": 3,
+    "succeeded": 3,
+    "rejected_after_watching": 0,
+    "published": 3
+   },
+   "buckets": [
+    "fitness",
+    "nutrition"
+   ],
+   "mode": "top-n",
+   "droppedSample": [
+    {
+     "shortcode": "Db-D6K3oxYi",
+     "reason": "Celebration of a personal milestone, no training or nutrition content",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DcgKfmPoBTk",
+     "reason": "Advertisement for laundry product, no training or nutrition subject",
+     "confidence": 0.95
+    },
+    {
+     "shortcode": "Dch9a6fIgfE",
+     "reason": "Talking about a watch purchase and ambassador goal, no training or nutrition",
+     "confidence": 0.8
+    },
+    {
+     "shortcode": "Dck0-tLo4iq",
+     "reason": "Road trip content, no training or nutrition subject",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "Dcncxl2y_e_",
+     "reason": "Relationship anniversary content, no training or nutrition subject",
+     "confidence": 0.95
+    },
+    {
+     "shortcode": "Dci1zQwogzJ",
+     "reason": "Watch gifting content, no training or nutrition subject",
+     "confidence": 0.9
+    }
+   ]
+  },
+  {
+   "username": "veronicabahl",
+   "name": "Veronica Bahl",
+   "generatedAt": "2026-08-29 18:12:21",
+   "engine": "openai / gpt-4.1-mini",
+   "counts": {
+    "scraped": 40,
+    "kept": 13,
+    "kept_fitness": 1,
+    "kept_nutrition": 12,
+    "dropped": 27,
+    "analysed": 3,
+    "succeeded": 3,
+    "rejected_after_watching": 0,
+    "published": 3
+   },
+   "buckets": [
+    "fitness",
+    "nutrition"
+   ],
+   "mode": "top-n",
+   "droppedSample": [
+    {
+     "shortcode": "DciYdJHtlXq",
+     "reason": "Caption is about invoice follow-up, not fitness or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "Db7rEuxtoOv",
+     "reason": "Caption and thumbnail show social/friendship content, no training or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DcTDLbEtCLV",
+     "reason": "Caption is about life advice and psychology, no fitness or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DZT0EW9sRRe",
+     "reason": "Caption about dressing well and mood, no fitness or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DcBP4jPtOZ7",
+     "reason": "Caption is inspirational/hustle advice, no fitness or nutrition",
+     "confidence": 0.9
+    },
+    {
+     "shortcode": "DcNpzibNrmQ",
+     "reason": "Caption about dopamine menu and sunscreen, no direct nutrition or fitness training",
+     "confidence": 0.8
+    }
+   ]
+  }
+ ],
+ "reels": [
+  {
+   "id": "DcN7Ww8g6Pd",
+   "creator": "anmolraina13",
+   "url": "https://www.instagram.com/p/DcN7Ww8g6Pd/",
+   "caption": "🏊🚴🏃 #ironman #ironman703training",
+   "hashtags": [
+    "ironman",
+    "ironman703training"
+   ],
+   "timestamp": "2026-08-19T10:04:47.000Z",
+   "views": 215554,
+   "likes": 6605,
+   "comments": 55,
+   "duration": 17,
+   "framesUsed": 12,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption and thumbnail both mention Ironman training and show training gear",
+    "confidence": 1.0,
+    "signal": "both"
+   },
+   "bucket": null,
+   "bucketReason": null,
+   "hook": "IRONMAN HOW I SPLIT MY TRAINING",
+   "summary": "An Indian fitness creator shares his weekly Ironman training split covering swimming, biking, running, and strength training.",
+   "detail": "The reel begins with the creator introducing his Ironman training split. Each day of the week is shown with specific training activities: Monday is swimming, Tuesday includes Hyrox and biking, Wednesday combines swimming with upper body lifting, Thursday is tempo running, Friday involves swimming and biking, Saturday focuses on Hyrox strength training, and Sunday is dedicated to a long indoor bike ride. The video features clips of the creator performing these activities in various settings such as a pool, gym, running track, and home. The reel ends with the creator on the indoor bike, emphasizing the consistency and variety in his training.",
+   "topic": "training",
+   "subTopics": [
+    "Ironman training",
+    "swimming",
+    "biking",
+    "running",
+    "strength training",
+    "Hyrox"
+   ],
+   "format": "voiceover_broll",
+   "setting": "multiple — home (indoor bike), pool (swimming), gym (strength training), outdoor track (running), climbing wall area (Hyrox)",
+   "people": {},
+   "exercises": [
+    "swimming",
+    "biking (indoor cycling)",
+    "tempo run",
+    "upper body cable row",
+    "Hyrox strength training exercises"
+   ],
+   "foods": [],
+   "equipment": [
+    "indoor bike trainer",
+    "rowing machine",
+    "cable machine",
+    "weights/plates"
+   ],
+   "brands": [],
+   "graphics": [],
+   "subtitles": [],
+   "claims": [
+    "The creator follows a structured weekly training split for Ironman preparation.",
+    "Training includes a mix of swimming, biking, running, and strength training.",
+    "Hyrox training is incorporated twice a week for strength and conditioning.",
+    "The schedule balances endurance and strength workouts throughout the week."
+   ],
+   "cta": null,
+   "audience": "endurance athletes, triathlon and Ironman trainees, fitness enthusiasts interested in structured training plans",
+   "tone": [
+    "educational",
+    "motivational"
+   ],
+   "language": "hindi",
+   "quality": {
+    "production": "Well-lit, clear framing with smooth transitions between different training scenes.",
+    "information_density": "medium — concise presentation of weekly training split with visual examples.",
+    "watchability": "Good pacing with engaging visuals and clear on-screen text that hooks viewers immediately."
+   },
+   "quotes": [
+    "प्रस्तुति पर करते हैं"
+   ],
+   "evidence": {
+    "from_frames": [
+     "On-screen text showing daily training activities.",
+     "Visuals of swimming in a pool, indoor cycling, running on a track, gym strength exercises.",
+     "Creator wearing heart rate monitor and fitness gear consistent with endurance training."
+    ],
+    "from_audio": [
+     "The single Hindi phrase 'प्रस्तुति पर करते हैं' indicating the start of a presentation."
+    ]
+   },
+   "uncertainties": [
+    "Exact details of the Hyrox exercises and intensity are not fully clear from still frames.",
+    "No spoken explanation of training details beyond the opening phrase."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/DcN7Ww8g6Pd.jpg",
+   "frames": [
+    "assets/frames/DcN7Ww8g6Pd/f1.jpg",
+    "assets/frames/DcN7Ww8g6Pd/f2.jpg",
+    "assets/frames/DcN7Ww8g6Pd/f3.jpg",
+    "assets/frames/DcN7Ww8g6Pd/f4.jpg",
+    "assets/frames/DcN7Ww8g6Pd/f5.jpg",
+    "assets/frames/DcN7Ww8g6Pd/f6.jpg"
+   ]
+  },
+  {
+   "id": "DcNihlpIxU1",
+   "creator": "overlydaa",
+   "url": "https://www.instagram.com/p/DcNihlpIxU1/",
+   "caption": "Who’s joining me??? 🙋🏻‍♀️\n\nFinally found a pull up bar that fits my door😮‍💨 now no one can stop me from doing my 1st pull up \n.\n.\n.\n.\n#pullup #strongwomen #strengthtraining",
+   "hashtags": [
+    "pullup",
+    "strongwomen",
+    "strengthtraining"
+   ],
+   "timestamp": "2026-08-19T06:28:23.000Z",
+   "views": 174650,
+   "likes": 2820,
+   "comments": 42,
+   "duration": 16,
+   "framesUsed": 8,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption and thumbnail clearly show pull up training",
+    "confidence": 0.9,
+    "signal": "both",
+    "subject": "pull up training session"
+   },
+   "bucket": "fitness",
+   "bucketReason": "The subject is performing a strength training exercise focused on body performance.",
+   "hook": "Just a girl trying to get her first pull up Time to join the 1% club",
+   "summary": "A woman installs a pull-up bar in her doorway and attempts her first pull-up with assistance.",
+   "detail": "The reel shows a woman setting up a pull-up bar in a doorway using a yellow step ladder. She positions the bar securely and then attempts to do her first pull-up. The text overlay indicates she is trying to join the '1% club' of people who can do pull-ups. In the final frames, she is assisted by another person to complete the pull-up, showing effort and determination. The reel ends with her smiling, indicating a sense of achievement.",
+   "topic": "training",
+   "subTopics": [
+    "pull-up",
+    "strength training",
+    "beginner progress"
+   ],
+   "format": "exercise_demo",
+   "setting": "home — indoors in a doorway with a pull-up bar being installed",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 2,
+    "note": "solo woman mostly, with one frame showing a second person assisting with the pull-up"
+   },
+   "exercises": [
+    "pull-up"
+   ],
+   "foods": [],
+   "equipment": [
+    "doorway pull-up bar",
+    "yellow step ladder"
+   ],
+   "brands": [],
+   "graphics": [
+    "Just a girl trying to get her first pull up Time to join the 1% club"
+   ],
+   "subtitles": [],
+   "claims": [
+    "Using a doorway pull-up bar enables training at home",
+    "Assisted pull-ups help beginners work towards their first pull-up"
+   ],
+   "cta": null,
+   "audience": "beginners wanting to do their first pull-up",
+   "tone": [
+    "motivational",
+    "educational"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-lit, steady framing focusing on the creator and the doorway setup with clear visuals.",
+    "information_density": "medium — shows setup and attempt but no verbal explanation.",
+    "watchability": "Good pacing with a clear progression from setup to attempt and assistance, engaging for viewers interested in pull-ups."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Frame 1-3: Woman holding and installing a black and red doorway pull-up bar using a yellow step ladder in a home doorway.",
+     "Frame 4-5: Close-up of the woman gripping the pull-up bar, preparing to do pull-ups.",
+     "Frame 6-7: Woman performing a pull-up with assistance from a second person behind her.",
+     "Frame 8: Woman hanging from the pull-up bar showing effort and smiling.",
+     "Text overlay visible in all frames: 'Just a girl trying to get her first pull up Time to join the 1% club'."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact brand of the pull-up bar is not visible or legible in any frame."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/DcNihlpIxU1.jpg",
+   "frames": [
+    "assets/frames/DcNihlpIxU1/f1.jpg",
+    "assets/frames/DcNihlpIxU1/f2.jpg",
+    "assets/frames/DcNihlpIxU1/f3.jpg",
+    "assets/frames/DcNihlpIxU1/f4.jpg",
+    "assets/frames/DcNihlpIxU1/f5.jpg",
+    "assets/frames/DcNihlpIxU1/f6.jpg"
+   ]
+  },
+  {
+   "id": "Db_Lh9KhqD_",
+   "creator": "veronicabahl",
+   "url": "https://www.instagram.com/p/Db_Lh9KhqD_/",
+   "caption": "THE CHOCOLATE CAKE THAT’S ACTUALLY BREAKFAST 🍫🥒\n\nI finally decided to make my own after having one of the best zucchini chocolate cakes at Chorus Café in Bombay a couple of weeks ago. That’s where the inspiration for this recipe came from. ❤️\n\nRECIPE ↓\n\nIngredients:\n• 50g rolled oats\n• 75g green zucchini, grated\n• 2 whole eggs OR 1 whole egg + 4 egg whites\n- 1 tea spoon baking powder and half tea spoon baking soda \n• 40g banana\n• 40ml almond milk\n• 30g cocoa powder\n• 30g sugar-free sweetener\n\nMETHOD:\n\nAdd the oats, grated zucchini, eggs (if using 2 whole eggs), banana, almond milk, cocoa powder and sweetener to a blender. Blend until completely smooth.\n\nIf the batter feels too thick, add a little water and blend again. You want it to be smooth, thick but still runny enough to pour.\n\nIf you’re using 1 whole egg + 4 egg whites, whisk the egg whites separately until slightly fluffy, then gently fold them into the blended batter.\n\nThis makes the cake lighter and airier.\n\nI personally prefer using 2 whole eggs because it makes the cake denser, richer and more mousse-like. 🤌🏼\n\nGrease an oven/air-fryer-safe dish with one spray of olive oil and line with baking paper. Pour in the batter.\n\nBAKE:\n200°C for 20 minutes\nthen 250°C for another 5–10 minutes.\n\nEvery oven/air fryer is different, so check it as you go. Insert a fork into the centre — it should come out clean when the cake is cooked through.\n\nTOP IT OFF 🍓🫐\n\nI HIGHLY recommend a mountain of fresh + frozen berries. The tartness cuts through the dense, mousse-y chocolate cake SO well.\n\nRoasted dry fruits also work beautifully if that’s more your thing.",
+   "hashtags": [],
+   "timestamp": "2026-08-13T16:38:40.000Z",
+   "views": 80576,
+   "likes": 1546,
+   "comments": 41,
+   "duration": 56,
+   "framesUsed": 14,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Thumbnail and caption clearly show a healthy recipe and ingredients",
+    "confidence": 0.95,
+    "signal": "both",
+    "subject": "zucchini chocolate cake recipe"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel focuses on a healthy recipe and the ingredients that go into the cake, emphasizing nutrition and vegetable intake.",
+   "hook": "If somebody in your life has asked you to eat more vegetables, I have a solution for you.",
+   "summary": "A fitness creator demonstrates how to make a low-calorie zucchini chocolate cake that can be eaten for breakfast or dessert.",
+   "detail": "The creator introduces a recipe for a chocolate cake that includes grated zucchini as a hidden vegetable ingredient, making it a nutritious option. She explains the ingredients and the blending process, emphasizing that the cake can be made in an oven or air fryer. The video shows her preparing the batter, pouring it into a lined dish, and baking it. She highlights that the cake is versatile and can be eaten for breakfast, dessert, or a snack, and shares that it has been well received by her friends and family. The full recipe is provided in the caption.",
+   "topic": "nutrition",
+   "subTopics": [
+    "healthy baking",
+    "vegetable incorporation",
+    "low-calorie recipes"
+   ],
+   "format": "tutorial",
+   "setting": "kitchen — a home kitchen with warm lighting and a floral tablecloth",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 1,
+    "note": "solo creator in a home kitchen setting"
+   },
+   "exercises": [],
+   "foods": [
+    "rolled oats",
+    "grated zucchini",
+    "eggs",
+    "banana",
+    "almond milk",
+    "cocoa powder",
+    "sugar-free sweetener",
+    "fresh and frozen berries"
+   ],
+   "equipment": [
+    "blender",
+    "oven or air fryer-safe dish",
+    "oven or air fryer"
+   ],
+   "brands": [
+    {
+     "name": "Truworth",
+     "where": "frame 8, on the sweetener packaging held by the creator",
+     "confidence": 0.9
+    }
+   ],
+   "graphics": [
+    "come make my zucchini chocolate cake with me"
+   ],
+   "subtitles": [
+    "If somebody in your life has asked you to eat more vegetables, I have a solution for you.",
+    "Here is a cake and yes, I have sneaked in an entire vegetable in it and you need to make it ASAP.",
+    "This cake is inspired by one of the best zucchini chocolate cakes I had a couple of weeks ago"
+   ],
+   "claims": [
+    "The cake contains an entire vegetable (zucchini) sneaked in.",
+    "The cake is low calorie and can be eaten for breakfast, dessert, or a snack.",
+    "The cake can be made in an oven or air fryer.",
+    "Using 2 whole eggs makes the cake denser and richer, while using egg whites makes it lighter and airier.",
+    "The cake has been well received by the creator's friends, family, and roommate."
+   ],
+   "cta": "Make this zucchini chocolate cake ASAP; full recipe is in the caption below.",
+   "audience": "people looking to eat more vegetables, health-conscious individuals, those wanting low-calorie desserts",
+   "tone": [
+    "educational",
+    "motivational",
+    "calm"
+   ],
+   "language": "english",
+   "quality": {
+    "production": "Well-lit, close-up shots in a cozy kitchen with clear framing and smooth editing.",
+    "information_density": "medium — recipe steps and benefits are clearly explained without overwhelming detail.",
+    "watchability": "Good pacing with a strong hook and engaging visuals of the cooking process."
+   },
+   "quotes": [
+    "If somebody in your life has asked you to eat more vegetables, I have a solution for you.",
+    "Here is a cake and yes, I have sneaked in an entire vegetable in it and you need to make it ASAP.",
+    "This cake is inspired by one of the best zucchini chocolate cakes I had a couple of weeks ago",
+    "You can have it for breakfast, dessert, a snack, honestly whenever you want cake.",
+    "If you're looking for a way to sneak in vegetables into a chocolate cake without anyone knowing, this is your sign."
+   ],
+   "evidence": {
+    "from_frames": [
+     "Creator holding a blender with batter and pouring it into a lined baking dish on a floral tablecloth.",
+     "Close-up of grated zucchini being added to the blender.",
+     "Creator holding a package labeled 'Truworth' sweetener.",
+     "Batter being spread in a baking dish and placed in an oven or air fryer.",
+     "Finished chocolate cake in a glass container with berries on top."
+    ],
+    "from_audio": [
+     "If somebody in your life has asked you to eat more vegetables, I have a solution for you.",
+     "Here is a cake and yes, I have sneaked in an entire vegetable in it and you need to make it ASAP.",
+     "This cake is inspired by one of the best zucchini chocolate cakes I had a couple of weeks ago at a cafe in Bombay.",
+     "You can have it for breakfast, dessert, a snack, honestly whenever you want cake.",
+     "If you're looking for a way to sneak in vegetables into a chocolate cake without anyone knowing, this is your sign."
+    ]
+   },
+   "uncertainties": [
+    "Exact baking time and temperature details are not visible in frames, only mentioned in caption.",
+    "No direct visual confirmation of air fryer use, only mentioned in audio.",
+    "Specific quantities of ingredients are not shown visually, only in caption."
+   ],
+   "transcript": "If somebody in your life has asked you to eat more vegetables, I have a solution for you. Here is a cake and yes, I have sneaked in an entire vegetable in it and you need to make it ASAP. This cake is inspired by one of the best zucchini chocolate cakes I had a couple of weeks ago at a cafe in Bombay and I couldn't stop thinking about it but obviously I had to make my own version that is as delicious as possible but also low calorie and this one comes together in a blender. The even crazier part is that this cake is basically my breakfast. I'm supposed to have oats, 75 grams of a vegetable, 2 whole eggs or egg whites and 100 grams of berries and I basically turn all of those ingredients into a chocolate cake. You can have it for breakfast, dessert, a snack, honestly whenever you want cake. It can also be made in an air fryer. I've been eating this almost every single day. My roommate is obsessed. I fed it to my friends, their kids and somehow everyone approves it. So if you're looking for a way to sneak in vegetables into a chocolate cake without anyone knowing, this is your sign. The full recipe is in the caption below.",
+   "thumb": "assets/thumbs/Db_Lh9KhqD_.jpg",
+   "frames": [
+    "assets/frames/Db_Lh9KhqD_/f1.jpg",
+    "assets/frames/Db_Lh9KhqD_/f2.jpg",
+    "assets/frames/Db_Lh9KhqD_/f3.jpg",
+    "assets/frames/Db_Lh9KhqD_/f4.jpg",
+    "assets/frames/Db_Lh9KhqD_/f5.jpg",
+    "assets/frames/Db_Lh9KhqD_/f6.jpg"
+   ]
+  },
+  {
+   "id": "Db9syCjM-hU",
+   "creator": "hustlerani",
+   "url": "https://www.instagram.com/p/Db9syCjM-hU/",
+   "caption": "Story time about how becoming a student with @rohankurupfitness and @mindfullofdaisies made me love food and working out all over again ❤️\n\nPizza ingredients \n@sorteddeli cauliflower and whey crust \n@pomoro.in marinara sauce \n20g Mozzarella \n10 g Parmesan \n150g Veggies \n80g chicken thighs pre marinated \n\nBake at the highest setting for 15 mins",
+   "hashtags": [],
+   "timestamp": "2026-08-13T02:49:01.000Z",
+   "views": 178219,
+   "likes": 5812,
+   "comments": 38,
+   "duration": 209,
+   "framesUsed": 20,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption details pizza ingredients and cooking, thumbnail shows pizza",
+    "confidence": 0.95,
+    "signal": "both",
+    "subject": "homemade pizza recipe"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel focuses on food preparation and healthy eating as part of a fitness lifestyle.",
+   "hook": "Story time about how becoming a student with @rohankurupfitness and @mindfullofdaisies made me love food and working out all over again",
+   "summary": "A fitness creator shares a personal story and demonstrates making a healthy homemade pizza to rekindle love for food and working out.",
+   "detail": "The reel features the creator in a kitchen preparing a pizza with a cauliflower and whey crust, spreading marinara sauce, and adding various toppings including pre-marinated chicken thighs, vegetables, and cheese. The creator reflects on how becoming a student of two fitness mentors helped her appreciate food and exercise again. The video ends with the pizza ready to bake and a positive message about progress and self-acceptance. There is no spoken audio, only music and ambient sounds.",
+   "topic": "nutrition",
+   "subTopics": [
+    "healthy recipes",
+    "meal prep",
+    "protein sources",
+    "vegetables"
+   ],
+   "format": "tutorial",
+   "setting": "kitchen — home kitchen with visible cabinets, oven, and countertop",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 1,
+    "note": "solo creator in a home kitchen"
+   },
+   "exercises": [],
+   "foods": [
+    "cauliflower and whey crust",
+    "marinara sauce",
+    "mozzarella cheese",
+    "parmesan cheese",
+    "vegetables (yellow squash, cherry tomatoes, mushrooms, bell peppers)",
+    "pre-marinated chicken thighs"
+   ],
+   "equipment": [
+    "oven",
+    "baking tray",
+    "grater",
+    "spoon",
+    "mixing bowls"
+   ],
+   "brands": [
+    {
+     "name": "SORTEDDELI",
+     "where": "on cauliflower and whey crust packaging visible in frames",
+     "confidence": 0.9
+    },
+    {
+     "name": "POMORO",
+     "where": "on marinara sauce jar label visible in frames",
+     "confidence": 0.95
+    }
+   ],
+   "graphics": [
+    "Pizza ingredients",
+    "@sorteddeli cauliflower and whey crust",
+    "@pomoro.in marinara sauce",
+    "20g Mozzarella",
+    "10 g Parmesan",
+    "150g Veggies",
+    "80g chicken thighs pre marinated",
+    "Bake at the highest setting for 15 mins"
+   ],
+   "subtitles": [],
+   "claims": [
+    "Using a cauliflower and whey crust is a healthy alternative for pizza base.",
+    "Adding pre-marinated chicken thighs and vegetables makes the pizza nutritious.",
+    "Baking at the highest setting for 15 minutes is recommended for this pizza.",
+    "Learning from fitness mentors helped the creator love food and working out again.",
+    "Small progress and self-acceptance are important in fitness and nutrition journeys."
+   ],
+   "cta": null,
+   "audience": "people interested in healthy eating and fitness lifestyle",
+   "tone": [
+    "educational",
+    "motivational",
+    "calm"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-lit, close-up kitchen shots with clear focus on food preparation and creator expressions.",
+    "information_density": "medium — clear visual steps for recipe with some personal context.",
+    "watchability": "Good pacing with engaging visuals and a relatable personal story, despite no spoken audio."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Creator holding a finished pizza with visible toppings and smiling (frames 1-2).",
+     "Spreading marinara sauce on cauliflower and whey crust on parchment paper (frames 3-5).",
+     "Adding sliced vegetables and pre-marinated chicken thighs on pizza base (frames 6-12).",
+     "Grating and sprinkling mozzarella and parmesan cheese over the pizza (frames 13-17).",
+     "Adding fresh spinach leaves on top before baking (frames 18-20).",
+     "Visible product labels on marinara sauce jar (Pomoro) and crust packaging (SortedDeli) in kitchen."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact seasoning or spices used on the chicken or vegetables are not clearly visible.",
+    "No spoken audio to confirm detailed recipe steps or personal story context beyond on-screen text and caption.",
+    "The oven temperature setting is described only in text, not visually confirmed."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/Db9syCjM-hU.jpg",
+   "frames": [
+    "assets/frames/Db9syCjM-hU/f1.jpg",
+    "assets/frames/Db9syCjM-hU/f2.jpg",
+    "assets/frames/Db9syCjM-hU/f3.jpg",
+    "assets/frames/Db9syCjM-hU/f4.jpg",
+    "assets/frames/Db9syCjM-hU/f5.jpg",
+    "assets/frames/Db9syCjM-hU/f6.jpg"
+   ]
+  },
+  {
+   "id": "Db2CK7-soO7",
+   "creator": "veronicabahl",
+   "url": "https://www.instagram.com/p/Db2CK7-soO7/",
+   "caption": "to be loved, is to be seen. 💛",
+   "hashtags": [],
+   "timestamp": "2026-08-10T03:20:05.000Z",
+   "views": 346914,
+   "likes": 14842,
+   "comments": 141,
+   "duration": 67,
+   "framesUsed": 17,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption details a specific oats recipe and thumbnail shows food",
+    "confidence": 0.9,
+    "signal": "caption|thumbnail",
+    "subject": "Carrot Cake Oats recipe"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel centers around food preparation, sharing a meal, and emotional reflections related to eating and relationships.",
+   "hook": "I had sent Ankita a screenshot of someone making pancakes for their wife saying 'someday' a few days ago...",
+   "summary": "Two friends share a heartfelt breakfast moment featuring homemade pancakes and a reflection on gratitude.",
+   "detail": "The reel shows two women sitting at a table in a home setting, where one has made pancakes for the other after a casual conversation about breakfast calories. The pancakes are served with tea and garnished with raspberries. The creator reflects emotionally on feeling lucky to have her mom, highlighting a moment of appreciation and connection. The video ends with them enjoying their time together, emphasizing the warmth of their friendship and family bonds.",
+   "topic": "nutrition",
+   "subTopics": [
+    "homemade food",
+    "emotional wellbeing",
+    "gratitude"
+   ],
+   "format": "vlog",
+   "setting": "home — a dining area with a table, chairs, and home decor visible",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 2,
+    "note": "two women sitting and interacting in a cozy home environment"
+   },
+   "exercises": [],
+   "foods": [
+    "pancakes",
+    "tea",
+    "raspberries"
+   ],
+   "equipment": [
+    "tableware (plates, cups, forks)",
+    "serving tray"
+   ],
+   "brands": [],
+   "graphics": [],
+   "subtitles": [
+    "I had sent Ankita a screenshot of someone making pancakes for their wife saying 'someday' a few days ago...",
+    "so she casually asked me my breakfast calories...",
+    "and made pancakes for breakfast for me."
+   ],
+   "claims": [
+    "Sharing food and moments with loved ones can be emotionally meaningful.",
+    "Small gestures like making breakfast can express care and love."
+   ],
+   "cta": null,
+   "audience": "people interested in food, relationships, and emotional wellbeing",
+   "tone": [
+    "calm",
+    "motivational",
+    "emotional"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Casual handheld framing with natural lighting and minimal editing, creating an intimate feel.",
+    "information_density": "low — the reel focuses on a personal moment rather than dense information.",
+    "watchability": "Good pacing with a warm, relatable hook and emotional payoff that holds attention."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Two women sitting at a dining table in a home, one wearing glasses and holding a phone, the other smiling and waiting with a bowl.",
+     "Close-ups of a tray with dark pancakes, a cup of tea, and raspberries on the table.",
+     "One woman placing pancakes on a plate and garnishing with raspberries.",
+     "The women smiling and interacting warmly, with home decor visible including a clock, mirror, and paintings."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "No clear spoken language or dialogue due to unintelligible audio transcript.",
+    "Exact relationship between the two women is inferred but not explicitly stated.",
+    "No visible brand logos or product names identified in the frames."
+   ],
+   "transcript": "ඉබචධ මමතම අඦමො ඕමමම අටමම බමතම මමග?",
+   "thumb": "assets/thumbs/Db2CK7-soO7.jpg",
+   "frames": [
+    "assets/frames/Db2CK7-soO7/f1.jpg",
+    "assets/frames/Db2CK7-soO7/f2.jpg",
+    "assets/frames/Db2CK7-soO7/f3.jpg",
+    "assets/frames/Db2CK7-soO7/f4.jpg",
+    "assets/frames/Db2CK7-soO7/f5.jpg",
+    "assets/frames/Db2CK7-soO7/f6.jpg"
+   ]
+  },
+  {
+   "id": "Db0aioMImnj",
+   "creator": "overlydaa",
+   "url": "https://www.instagram.com/p/Db0aioMImnj/",
+   "caption": "ROAD TO BERLIN MARATHON(my 1st world major🥺)\n\nWhen you are training for a marathon, running a half marathon on a random sunday becomes so casual 🤣 \n.\nTraining with @runna Code OVERLYDAA to get 2 free weeks, cannot recommend it enough 🙏\n.\n.\n.\n#marathon #running #halfmarathon",
+   "hashtags": [
+    "marathon",
+    "running",
+    "halfmarathon"
+   ],
+   "timestamp": "2026-08-09T12:20:17.000Z",
+   "views": 151518,
+   "likes": 3255,
+   "comments": 33,
+   "duration": 44,
+   "framesUsed": 11,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption and thumbnail both indicate half marathon training",
+    "confidence": 0.9,
+    "signal": "both",
+    "subject": "Half marathon training run"
+   },
+   "bucket": "fitness",
+   "bucketReason": "The subject is focused on training and running performance.",
+   "hook": "04:32 am hydrate",
+   "summary": "A day in the life of a marathon trainee showing her early morning routine and half marathon run.",
+   "detail": "The reel follows the creator from waking up early at 4:32 am, hydrating, preparing pre-workout food, and stretching before heading out for a run. She documents her running progress with timestamps showing distances covered at 5km, 16km, and finally completing a half marathon at 8:30 am. The video also shows an aid station where runners take refreshments. The overall theme is her training journey towards the Berlin Marathon.",
+   "topic": "endurance",
+   "subTopics": [
+    "marathon training",
+    "running routine",
+    "hydration",
+    "pre-workout nutrition"
+   ],
+   "format": "vlog",
+   "setting": "home and outdoor — early morning indoor routine followed by outdoor running in an urban area",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 3,
+    "note": "solo creator mostly, with a few other runners visible during the run and at aid station"
+   },
+   "exercises": [
+    "running",
+    "stretching"
+   ],
+   "foods": [
+    "pre-workout food (toast, banana)",
+    "hydration water bottle",
+    "aid station refreshments (cubed fruit or snacks)"
+   ],
+   "equipment": [
+    "water bottle",
+    "smartwatch or fitness tracker"
+   ],
+   "brands": [
+    {
+     "name": "Adidas",
+     "where": "frame 6, sports bra worn by creator",
+     "confidence": 0.9
+    }
+   ],
+   "graphics": [
+    "04:32 am hydrate",
+    "04:47 am",
+    "05:02 am pre workout",
+    "05:13 am",
+    "05:16 am",
+    "05:21 am",
+    "05:37 am",
+    "06:27 am 5km",
+    "07:30 am aid station",
+    "07:56 am 16km",
+    "08:30 am half marathon"
+   ],
+   "subtitles": [],
+   "claims": [
+    "Hydration is important early in the morning before training.",
+    "Pre-workout nutrition is part of the routine.",
+    "Stretching is done before running.",
+    "Running a half marathon is part of marathon training.",
+    "Aid stations provide necessary nutrition during long runs."
+   ],
+   "cta": null,
+   "audience": "marathon trainees and endurance runners",
+   "tone": [
+    "motivational",
+    "calm"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Casual handheld filming with natural lighting and smooth chronological editing.",
+    "information_density": "medium — shows a clear routine with timestamps but no verbal explanation.",
+    "watchability": "Good pacing with time-lapse style progression and varied scenes to maintain interest."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Frame 1: Creator drinking water in kitchen at 04:32 am with on-screen text '04:32 am hydrate'.",
+     "Frame 2: Creator opening fridge at 04:47 am.",
+     "Frame 3: Creator sitting on couch with pre-workout food at 05:02 am with text 'pre workout'.",
+     "Frame 4: Creator stretching with hands behind head at 05:13 am.",
+     "Frame 5: Creator stretching arms wearing Adidas sports bra at 05:16 am.",
+     "Frame 6: Creator preparing drink in kitchen at 05:21 am.",
+     "Frame 7: Creator in elevator holding water bottle at 05:37 am.",
+     "Frame 8: Creator running outdoors with two other runners at 06:27 am with text '5km'.",
+     "Frame 9: Aid station with runners taking refreshments at 07:30 am.",
+     "Frame 10: Creator running outdoors at 07:56 am with text '16km'.",
+     "Frame 11: Creator with two other runners after finishing half marathon at 08:30 am with text 'half marathon'."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact contents of pre-workout food and aid station refreshments are not fully clear from frames.",
+    "No verbal explanation or narration to confirm details or claims.",
+    "Brand logos other than Adidas sports bra are not clearly legible."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/Db0aioMImnj.jpg",
+   "frames": [
+    "assets/frames/Db0aioMImnj/f1.jpg",
+    "assets/frames/Db0aioMImnj/f2.jpg",
+    "assets/frames/Db0aioMImnj/f3.jpg",
+    "assets/frames/Db0aioMImnj/f4.jpg",
+    "assets/frames/Db0aioMImnj/f5.jpg",
+    "assets/frames/Db0aioMImnj/f6.jpg"
+   ]
+  },
+  {
+   "id": "DbvJ-A7pgcu",
+   "creator": "anmolraina13",
+   "url": "https://www.instagram.com/p/DbvJ-A7pgcu/",
+   "caption": "Follow for more Ironman + Hybrid Masti 🤝\n\n#ironman #hyrox #hybridathlete",
+   "hashtags": [
+    "ironman",
+    "hyrox",
+    "hybridathlete"
+   ],
+   "timestamp": "2026-08-07T11:14:37.000Z",
+   "views": 196404,
+   "likes": 7209,
+   "comments": 23,
+   "duration": 34,
+   "framesUsed": 12,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption and thumbnail mention Ironman and show gym environment, indicating training content",
+    "confidence": 1.0,
+    "signal": "both"
+   },
+   "bucket": null,
+   "bucketReason": null,
+   "hook": "Full day of Ironman plus Hyrox training baby let's go",
+   "summary": "A fitness creator shares a day combining Ironman and Hyrox training with a focus on endurance and speed.",
+   "detail": "The video starts with the creator explaining the importance of training for Ironman, especially swimming, to avoid failure. He then shows himself consuming an endurance fuel supplement before moving to an upper body lifting session focused on Hyrox training. He mentions reducing Hyrox sessions to prioritize Ironman preparation for an event in November. The video ends with a motivational note about being not just fast but extremely fast, encouraging viewers to follow for more hybrid training content.",
+   "topic": "training",
+   "subTopics": [
+    "endurance training",
+    "Ironman preparation",
+    "Hyrox training",
+    "swimming",
+    "strength training"
+   ],
+   "format": "vlog",
+   "setting": "gym and pool — indoor gym with Hyrox branding and outdoor swimming pool",
+   "people": {},
+   "exercises": [
+    "swimming",
+    "pull-ups",
+    "barbell bent-over row",
+    "rope battle waves"
+   ],
+   "foods": [
+    "Plus One Three endurance fuel"
+   ],
+   "equipment": [
+    "pull-up bar",
+    "barbell with plates",
+    "battle ropes",
+    "swimming goggles and cap"
+   ],
+   "brands": [
+    {
+     "name": "Hyrox",
+     "where": "gym banners and wall posters in multiple frames",
+     "confidence": 1.0
+    },
+    {
+     "name": "Nike",
+     "where": "backpack in frame 4",
+     "confidence": 0.9
+    },
+    {
+     "name": "Bullrock",
+     "where": "weight plates on barbell in gym",
+     "confidence": 0.9
+    }
+   ],
+   "graphics": [],
+   "subtitles": [],
+   "claims": [
+    "If you don't train for Ironman swimming, you will drown.",
+    "In Hyrox, if you don't train, you just become slow.",
+    "Endurance fuel (Plus One Three) is used between sessions.",
+    "The focus is on combining Ironman and Hyrox training but prioritizing Ironman for November.",
+    "They are reducing Hyrox sessions to two to focus more on Ironman.",
+    "The goal is to be extremely fast, not just fast."
+   ],
+   "cta": "Follow for more Ironman plus hybrid masti",
+   "audience": "hybrid athletes and endurance sport enthusiasts",
+   "tone": [
+    "motivational",
+    "educational"
+   ],
+   "language": "hinglish",
+   "quality": {
+    "production": "Well-lit indoor gym and outdoor pool shots with clear framing and readable on-screen text.",
+    "information_density": "medium — combines motivational talk with visible training and supplement use.",
+    "watchability": "Good pacing with varied scenes and a strong hook at the start, maintaining viewer interest."
+   },
+   "quotes": [
+    "full day of Ironman plus Hirox training baby let's go",
+    "aaj ka pehla session tha swimming unlike Hirox",
+    "jaha par agar tum train karke na jao tum bas slow ho gaye",
+    "agar mai Ironman mein train karke nahi gaya to mai doob jaunga",
+    "plus one three ka endurance fuel pe la",
+    "next up is Mumbai Hirox bhai",
+    "lekin is baar hi hum log Hirox ke liye sirf do sessions rakh rahe ha",
+    "because we need to focus on Ironman which is in November",
+    "not just fast, fast as f**k"
+   ],
+   "evidence": {
+    "from_frames": [
+     "Swimming pool scenes show swimming session.",
+     "Gym scenes show pull-ups, barbell rows, and battle ropes.",
+     "On-screen text mentions Hyrox training and endurance fuel.",
+     "Visible supplement container held by creator.",
+     "Hyrox branding visible on gym banners and posters.",
+     "Nike backpack visible on creator."
+    ],
+    "from_audio": [
+     "Creator talks about importance of swimming training for Ironman.",
+     "Mentions endurance fuel before second session.",
+     "Discusses combining Ironman and Hyrox training but prioritizing Ironman.",
+     "Mentions reducing Hyrox sessions to two.",
+     "Ends with motivational statement about being very fast."
+    ]
+   },
+   "uncertainties": [
+    "Exact details of the endurance fuel supplement ingredients or brand beyond 'Plus One Three' are not clear.",
+    "Specific exercises in the upper body lifting session are inferred from frames but not explicitly named in audio.",
+    "Intensity and volume of training sessions are not detailed."
+   ],
+   "transcript": "full day of Ironman plus Hirox training baby let's go aaj ka pehla session tha swimming unlike Hirox jaha par agar tum train karke na jao tum bas slow ho gaye agar mai Ironman mein train karke nahi gaya to mai doob jaunga swimming ke baad doosre session se pehle humne thoda plus one three ka endurance fuel pe la and then it was an upper body lift which was more Hirox focus next up is Mumbai Hirox bhai lekin is baar hi hum log Hirox ke liye sirf do sessions rakh rahe ha because we need to focus on Ironman which is in November because like I said hum doob nahi sakte and we have to actually be fast as well not just fast, fast as f**k that's it for this video, follow for more Ironman plus hybrid masti",
+   "thumb": "assets/thumbs/DbvJ-A7pgcu.jpg",
+   "frames": [
+    "assets/frames/DbvJ-A7pgcu/f1.jpg",
+    "assets/frames/DbvJ-A7pgcu/f2.jpg",
+    "assets/frames/DbvJ-A7pgcu/f3.jpg",
+    "assets/frames/DbvJ-A7pgcu/f4.jpg",
+    "assets/frames/DbvJ-A7pgcu/f5.jpg",
+    "assets/frames/DbvJ-A7pgcu/f6.jpg"
+   ]
+  },
+  {
+   "id": "DbTMkqKypom",
+   "creator": "overlydaa",
+   "url": "https://www.instagram.com/p/DbTMkqKypom/",
+   "caption": "Who would have thought funmaxxing could land us on the podium🫪🏆🤣\n\n#hyrox #hyroxwomensrelay #hyroxindia #hyroxdelhi",
+   "hashtags": [
+    "hyrox",
+    "hyroxwomensrelay",
+    "hyroxindia",
+    "hyroxdelhi"
+   ],
+   "timestamp": "2026-07-27T14:40:11.000Z",
+   "views": 285168,
+   "likes": 5524,
+   "comments": 65,
+   "duration": 7,
+   "framesUsed": 8,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption and thumbnail show Hyrox relay race and podium",
+    "confidence": 0.9,
+    "signal": "both",
+    "subject": "Hyrox relay race performance"
+   },
+   "bucket": "fitness",
+   "bucketReason": "The subject is a team participating in a fitness competition and celebrating their performance.",
+   "hook": "\"Let's do a Creators Hyrox Relay for fun?\"",
+   "summary": "Four women creators celebrate placing second in a Hyrox Delhi women's relay event.",
+   "detail": "The reel opens with four women standing side by side in a gym, wearing matching Hyrox-branded sportswear and colorful shorts. On-screen text invites viewers to join a 'Creators Hyrox Relay for fun.' The women raise their hands together and squat in unison, showing team spirit. The scene then shifts to a celebration outside the event area where they hold Hyrox Delhi flags and cheer excitedly. Text reveals they ended up on the podium with a second-place finish in the age group category. The reel conveys a fun and triumphant team experience at a competitive fitness event.",
+   "topic": "training",
+   "subTopics": [
+    "team relay",
+    "competitive fitness",
+    "Hyrox event"
+   ],
+   "format": "vlog",
+   "setting": "gym and event venue — indoor gym floor and event hall with Hyrox branding",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 4,
+    "note": "four women, presumably the creators, posing and celebrating together"
+   },
+   "exercises": [
+    "squat"
+   ],
+   "foods": [],
+   "equipment": [
+    "battle ropes (coiled on floor)"
+   ],
+   "brands": [
+    {
+     "name": "Hyrox",
+     "where": "on sports bras of all four women and on flags they hold in the event venue",
+     "confidence": 1.0
+    }
+   ],
+   "graphics": [
+    "\"Let's do a Creators Hyrox Relay for fun?\"",
+    "\"We definitely should!\" Ended up on the Podium for 2nd place in AG 🏆",
+    "HYROX DELHI (on flags)"
+   ],
+   "subtitles": [],
+   "claims": [
+    "Participating in a creators' Hyrox relay was intended to be fun.",
+    "The team ended up placing second on the podium in their age group."
+   ],
+   "cta": null,
+   "audience": "fitness enthusiasts and Hyrox competitors",
+   "tone": [
+    "motivational",
+    "fun"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-lit, steady framing focusing on the team and their celebration with clear branding.",
+    "information_density": "low — mainly visual celebration and brief text overlays.",
+    "watchability": "high — quick pacing with engaging team energy and clear event context."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Frames 1-3 show four women in matching Hyrox sports bras and colorful shorts standing and squatting in a gym with battle ropes on the floor.",
+     "Frames 4-8 show the same four women holding large black and white flags with 'HYROX DELHI' text, cheering and celebrating in an event venue.",
+     "On-screen text in frames 1-3 reads: 'Let's do a Creators Hyrox Relay for fun?'",
+     "On-screen text in frames 4-8 reads: 'We definitely should! Ended up on the Podium for 2nd place in AG 🏆'."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "No direct footage of the actual relay race or specific exercises performed during the event, only a squat pose is visible.",
+    "No audio speech to confirm exact spoken words or additional context."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/DbTMkqKypom.jpg",
+   "frames": [
+    "assets/frames/DbTMkqKypom/f1.jpg",
+    "assets/frames/DbTMkqKypom/f2.jpg",
+    "assets/frames/DbTMkqKypom/f3.jpg",
+    "assets/frames/DbTMkqKypom/f4.jpg",
+    "assets/frames/DbTMkqKypom/f5.jpg",
+    "assets/frames/DbTMkqKypom/f6.jpg"
+   ]
+  },
+  {
+   "id": "DaxqWrpMcb8",
+   "creator": "hustlerani",
+   "url": "https://www.instagram.com/p/DaxqWrpMcb8/",
+   "caption": "15 cals dark choc brownie bites for the snacky gals out here. \n\nbefore anyone comes for me: 15 cals is MY number because i cut mine into a 9x9 grid. cut yours bigger, cut yours smaller, the math bends to your knife.\n\nanyway. i made brownie bites and they are gooey little reminders that all the good stuff can be made at home. \n\nthe dry team:\n100g gluten free plain flour (Yes You Can)\n30g Dutch processed cocoa (Ossoro)\n1 scoop Func Lab chocolate plant protein (use code ANKITA on website for a discount)\n30g sugar free cook & bake \na little baking soda + a little baking powder\n2-3g zero sugar chocolate pudding mix\n2 spoons zero sugar Bourn Vita\nsift all of that. \n\nthe good stuff:\n40g Amul bitter chocolate + 4 Royce discs + 40g Amul light butter. microwave it, then let it come back to room temp before you touch it again. patience.\n4 egg whites, whipped to stiff peaks. the airier the better, this is the whole \n\nputting it together:\nfold the egg whites into the dry mix. when it needs moisture, start adding almond milk (i used 137 degrees). measure with your heart. grease your pan with a bit of olive oil. oven preheated to 180 for 10-15 mins.\nfold in the whites, fold in the milk, then the cooled chocolate butter mix.\nbake 20 mins. skewer test, kill the oven when there are barely any crumbs on the stick.\ndo NOT rip it out of the pan immediately. let it cool, chop it up, fridge it so the chocolate and butter set into gooey goodness. serve on a cake stand if ur fancy like me. \n\nenjoy. don’t @ me about the calories.​​​​​​​​​​​​​​​​ or you can. I have done the math too many times.",
+   "hashtags": [],
+   "timestamp": "2026-07-14T14:06:39.000Z",
+   "views": 578815,
+   "likes": 17038,
+   "comments": 107,
+   "duration": 126,
+   "framesUsed": 20,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption details recipe and calories; thumbnail shows brownie bites",
+    "confidence": 0.9,
+    "signal": "both",
+    "subject": "homemade low-calorie brownie bites recipe"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel focuses on preparing a low-calorie snack recipe and the ingredients used.",
+   "hook": "15 cal brownie bites",
+   "summary": "A fitness creator demonstrates how to make low-calorie 15-calorie dark chocolate brownie bites at home.",
+   "detail": "The reel shows the creator in her kitchen preparing a recipe for 15-calorie dark chocolate brownie bites by mixing gluten-free flour, cocoa, plant protein, sugar-free ingredients, and other dry components. She then melts chocolate and butter, whips egg whites to stiff peaks, and folds everything together with almond milk before baking the mixture. After baking, she lets the brownies cool, cuts them into small bites, and presents them on a cake stand. The reel emphasizes that the calorie count depends on how the brownies are cut and encourages homemade treats with good ingredients.",
+   "topic": "nutrition",
+   "subTopics": [
+    "low-calorie recipes",
+    "gluten-free baking",
+    "plant protein",
+    "healthy snacks"
+   ],
+   "format": "tutorial",
+   "setting": "kitchen — home kitchen with visible cabinets and countertop",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 1,
+    "note": "solo creator in a home kitchen"
+   },
+   "exercises": [],
+   "foods": [
+    "gluten free plain flour (Yes You Can)",
+    "Dutch processed cocoa (Ossoro)",
+    "Func Lab chocolate plant protein",
+    "sugar free cook & bake",
+    "zero sugar chocolate pudding mix",
+    "zero sugar Bourn Vita",
+    "Amul bitter chocolate",
+    "Royce chocolate discs",
+    "Amul light butter",
+    "almond milk",
+    "egg whites"
+   ],
+   "equipment": [
+    "mixing bowls",
+    "flour sifter",
+    "oven tray",
+    "cake stand with red and white checkered paper",
+    "microwave (implied but not shown directly)"
+   ],
+   "brands": [
+    {
+     "name": "Yes You Can",
+     "where": "flour container visible in frames 3-4",
+     "confidence": 0.9
+    },
+    {
+     "name": "Ossoro",
+     "where": "Dutch processed cocoa jar in frame 5",
+     "confidence": 0.9
+    },
+    {
+     "name": "Func Lab",
+     "where": "green packet of plant protein in frames 6-7",
+     "confidence": 1.0
+    },
+    {
+     "name": "Bourn Vita",
+     "where": "blue and yellow container in frames 8-11",
+     "confidence": 1.0
+    },
+    {
+     "name": "Amul",
+     "where": "butter and chocolate packaging in frames 14 and 15",
+     "confidence": 0.95
+    },
+    {
+     "name": "Royce",
+     "where": "chocolate discs in frame 14",
+     "confidence": 0.9
+    }
+   ],
+   "graphics": [
+    "15 cal brownie bites"
+   ],
+   "subtitles": [],
+   "claims": [
+    "Each brownie bite is approximately 15 calories based on cutting into a 9x9 grid.",
+    "The recipe uses gluten-free flour and plant protein for a healthier option.",
+    "Whipping egg whites to stiff peaks is important for the texture.",
+    "Let the brownies cool before cutting to achieve gooey consistency.",
+    "Homemade treats can be both delicious and fit into calorie goals."
+   ],
+   "cta": null,
+   "audience": "people looking for low-calorie, homemade snack recipes",
+   "tone": [
+    "educational",
+    "calm"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-lit, steady framing focused on the creator and ingredients with clear visuals of the process.",
+    "information_density": "medium — clear step-by-step visuals but no spoken explanation.",
+    "watchability": "Good pacing with smooth transitions and a clear visual hook of the finished brownies."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Frames show the creator in a home kitchen mixing ingredients in bowls and sifting flour.",
+     "Visible product packaging includes Yes You Can flour, Ossoro cocoa, Func Lab protein, Bourn Vita, Amul chocolate and butter, and Royce chocolate discs.",
+     "The creator whips egg whites, folds ingredients, pours batter into a baking tray, and shows the finished brownies cut into a 9x9 grid on a cake stand.",
+     "On-screen text '15 cal brownie bites' appears in all frames."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact baking time and temperature are inferred from the caption but not visible in frames.",
+    "No spoken instructions, so some procedural details are assumed from typical baking steps.",
+    "Calorie count per bite is based on creator's explanation in caption, not visible in video."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/DaxqWrpMcb8.jpg",
+   "frames": [
+    "assets/frames/DaxqWrpMcb8/f1.jpg",
+    "assets/frames/DaxqWrpMcb8/f2.jpg",
+    "assets/frames/DaxqWrpMcb8/f3.jpg",
+    "assets/frames/DaxqWrpMcb8/f4.jpg",
+    "assets/frames/DaxqWrpMcb8/f5.jpg",
+    "assets/frames/DaxqWrpMcb8/f6.jpg"
+   ]
+  },
+  {
+   "id": "DaFtnKataGR",
+   "creator": "veronicabahl",
+   "url": "https://www.instagram.com/p/DaFtnKataGR/",
+   "caption": "Protein waffles batter\n50gms oats \n1 egg\n25gms plant protein, I used @thefunclab \n100ml almond milk (I used 137 almond milk, see if you need to add more)\nBaking powder \nBaking soda\nCinnamon \nVanilla extract \n\nYou can use my code VERONICA and get a discount with @thefunclab ❤️\n\nMix everything and set aside for 5-10 mins. \nGrease whatever waffle maker you have with lil olive oil and then start cooking them!\n\nI topped mine with fresh blueberries, coconut yoghurt and sugar free maple! 🍁\n\nWaffle iron is from amazon :) \n\nRoughly 485 cals, 33gms protein!\n\nand the person that I love taking care of the most @tendulkar_not_out 💗💗💗",
+   "hashtags": [],
+   "timestamp": "2026-06-27T12:28:47.000Z",
+   "views": 78876,
+   "likes": 1407,
+   "comments": 39,
+   "duration": 112,
+   "framesUsed": 20,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Detailed recipe for protein waffles with macros",
+    "confidence": 0.95,
+    "signal": "both",
+    "subject": "protein waffles recipe"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel focuses on preparing a high-protein nutritious meal rather than exercise or fitness performance.",
+   "hook": "come make my protein waffles with me",
+   "summary": "A fitness creator demonstrates how to make protein waffles with plant protein powder and toppings in a home kitchen.",
+   "detail": "The creator introduces a recipe for protein waffles using oats, egg, plant protein powder, almond milk, baking powder, baking soda, cinnamon, and vanilla extract. She mixes the ingredients in a bowl, cracks an egg, adds almond milk, and stirs the batter. The batter is cooked in a waffle iron on a gas stove. The finished waffles are topped with fresh blueberries, coconut yogurt, and sugar-free maple syrup. The video ends with a friend tasting the waffles and giving positive feedback.",
+   "topic": "nutrition",
+   "subTopics": [
+    "protein waffles",
+    "plant protein",
+    "healthy recipes",
+    "meal prep"
+   ],
+   "format": "tutorial",
+   "setting": "home kitchen — a bright kitchen with wooden cabinets and countertop",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 2,
+    "note": "solo cooking shots plus one frame with a friend tasting the waffles"
+   },
+   "exercises": [],
+   "foods": [
+    "oats",
+    "egg",
+    "plant protein powder (The Funclab brand, vanilla flavor)",
+    "almond milk (137 brand)",
+    "cinnamon",
+    "vanilla extract",
+    "baking powder",
+    "baking soda",
+    "fresh blueberries",
+    "coconut yogurt",
+    "sugar-free maple syrup"
+   ],
+   "equipment": [
+    "waffle iron",
+    "mixing bowl",
+    "spoon",
+    "gas stove",
+    "kitchen scale"
+   ],
+   "brands": [
+    {
+     "name": "The Funclab",
+     "where": "green plant protein powder packet in multiple frames",
+     "confidence": 1.0
+    },
+    {
+     "name": "137",
+     "where": "almond milk carton",
+     "confidence": 0.9
+    },
+    {
+     "name": "Amazon",
+     "where": "waffle iron packaging or mention in caption",
+     "confidence": 0.7
+    }
+   ],
+   "graphics": [
+    "come make my protein waffles with me",
+    "protein waffles batter",
+    "50gms oats",
+    "1 egg",
+    "25gms plant protein",
+    "100ml almond milk",
+    "baking powder",
+    "baking soda",
+    "cinnamon",
+    "vanilla extract"
+   ],
+   "subtitles": [],
+   "claims": [
+    "Protein waffles can be made using oats, egg, plant protein powder, almond milk, baking powder, baking soda, cinnamon, and vanilla extract.",
+    "The batter should be mixed and set aside for 5-10 minutes before cooking.",
+    "Grease the waffle maker with a little olive oil before cooking.",
+    "The recipe yields roughly 485 calories and 33 grams of protein.",
+    "Toppings like fresh blueberries, coconut yogurt, and sugar-free maple syrup complement the waffles."
+   ],
+   "cta": null,
+   "audience": "people interested in high-protein, healthy breakfast recipes",
+   "tone": [
+    "educational",
+    "calm",
+    "friendly"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-lit, steady framing focused on the creator and ingredients with smooth transitions.",
+    "information_density": "medium — clear visual demonstration of recipe steps without spoken explanation.",
+    "watchability": "Good pacing with engaging visuals and a satisfying final reveal of the plated waffles."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Creator in kitchen holding plant protein powder packet with visible brand name 'The Funclab'.",
+     "Mixing bowl with oats, cinnamon, baking powder, baking soda, and plant protein powder.",
+     "Cracking an egg into the bowl and pouring almond milk from a carton labeled '137'.",
+     "Using a spoon to mix batter and showing waffle iron on gas stove.",
+     "Finished waffles topped with blueberries, coconut yogurt, and syrup on a blue plate.",
+     "Two women in frame, one tasting the waffles and giving feedback."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact quantities of baking powder, baking soda, cinnamon, and vanilla extract are not visible in frames.",
+    "No audible speech to confirm spoken instructions or additional tips.",
+    "Brand of waffle iron is not clearly visible; only mentioned in caption."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/DaFtnKataGR.jpg",
+   "frames": [
+    "assets/frames/DaFtnKataGR/f1.jpg",
+    "assets/frames/DaFtnKataGR/f2.jpg",
+    "assets/frames/DaFtnKataGR/f3.jpg",
+    "assets/frames/DaFtnKataGR/f4.jpg",
+    "assets/frames/DaFtnKataGR/f5.jpg",
+    "assets/frames/DaFtnKataGR/f6.jpg"
+   ]
+  },
+  {
+   "id": "DaAkBa1MZ5j",
+   "creator": "fit.khurana",
+   "url": "https://www.instagram.com/p/DaAkBa1MZ5j/",
+   "caption": "Recipe ⬇️\nIngredients - \n\n(25g Protein, 11g fiber, 422 cals)\n\n✅For the filling - \nBoiled rajma – 100g\nTofu - 70-80g\nRed chilli powder – ½ tsp\nBlack pepper – ¼ tsp\nJeera powder – ½ tsp\nSalt to taste\nSchezwan chutney – 1 tsp\n\nWhole wheat tortilla or chapati – 1\nOil – 1 tsp (for cooking)\n\nFor the yogurt sauce - \nGreek yogurt – 2–3 tbsp\nChilli sauce – 1 tbsp\n\nFor the salsa - \nTomato – 2-3 tbsp finely chopped\nFresh coriander – a handful\nLemon juice – 1 tbsp\nKetchup – ½ tbsp (optional)\nSalt to taste\n\nHow to Prep ⬇️\n🌸Mash the boiled rajma and tofu together with chilli powder, pepper, jeera powder, salt, and schezwan chutney until well combined.\n🌸Slightly cook the tortilla on one side. Flip, spread the rajma–tofu mixture evenly on the cooked side, drizzle a little oil, and cook until golden and slightly crispy on both sides. \n🌸Mix Greek yogurt and chilli sauce to make a quick creamy sauce.\n🌸In another bowl, mix tomato, coriander, lemon juice, ketchup, and salt to make the salsa. \n🌸Layer the sauce and salsa over the tortilla, fold into half, cut, and serve hot🔥\n\n✅Should I do more wraps/tacos or sandwiches? Jaldi batao⬇️\n\nMexican tacos, wraps, high protein tacos, creamy tacos, vegetarian quick recipes, easy lunch ideas",
+   "hashtags": [],
+   "timestamp": "2026-06-25T12:26:14.000Z",
+   "views": 2406635,
+   "likes": 48227,
+   "comments": 167,
+   "duration": 40,
+   "framesUsed": 10,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Thumbnail and caption detail a high-protein recipe with ingredients and nutrition info",
+    "confidence": 0.9,
+    "signal": "both",
+    "subject": "Mexican taco recipe with protein and calories"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel focuses on preparing and presenting a nutritious recipe with detailed ingredients and nutritional information.",
+   "hook": "Mexican Taco 25G Protein, 422 Cals",
+   "summary": "A step-by-step visual recipe for making a high-protein Mexican taco wrap with rajma and tofu filling.",
+   "detail": "The reel visually demonstrates the preparation of a Mexican taco wrap featuring a filling made from boiled rajma and tofu mixed with spices and schezwan chutney. The filling is spread on a whole wheat tortilla cooked on a pan until golden and crispy. A creamy yogurt sauce and fresh tomato-coriander salsa are prepared separately and layered inside the wrap before folding and serving. The creator shows the final product and enjoys the wrap, highlighting its nutritional benefits of 25g protein and 422 calories. The reel ends with a prompt asking viewers if they want more wraps or sandwiches recipes.",
+   "topic": "nutrition",
+   "subTopics": [
+    "high protein recipes",
+    "vegetarian meals",
+    "meal prep",
+    "healthy cooking"
+   ],
+   "format": "tutorial",
+   "setting": "kitchen — bright natural light, home kitchen setup with plants and wooden cutting boards",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 1,
+    "note": "solo creator in a home kitchen environment"
+   },
+   "exercises": [],
+   "foods": [
+    "boiled rajma (kidney beans)",
+    "tofu",
+    "whole wheat tortilla",
+    "Greek yogurt",
+    "tomato",
+    "fresh coriander",
+    "lemon juice",
+    "schezwan chutney",
+    "chilli sauce"
+   ],
+   "equipment": [
+    "stove pan",
+    "spoon",
+    "mixing bowls",
+    "wooden cutting board",
+    "green spatula",
+    "metal citrus juicer"
+   ],
+   "brands": [
+    {
+     "name": "Philips",
+     "where": "visible on stove panel in frames 5 and 6",
+     "confidence": 0.9
+    }
+   ],
+   "graphics": [
+    "Mexican Taco 25G Protein, 422 Cals",
+    "it also has 11 daily fiber intake.",
+    "and layer with",
+    "because of recipes",
+    "without opening",
+    "Low effort,",
+    "vibe for 2026,",
+    "so good."
+   ],
+   "subtitles": [],
+   "claims": [
+    "This Mexican taco wrap contains 25 grams of protein and 422 calories.",
+    "The filling provides 11 grams of daily fiber intake.",
+    "The recipe is low effort and quick to prepare.",
+    "The wrap is made with whole wheat tortilla and a filling of rajma and tofu mixed with spices and schezwan chutney.",
+    "A creamy yogurt sauce and fresh salsa enhance the flavor."
+   ],
+   "cta": "Should I do more wraps/tacos or sandwiches? Jaldi batao (Tell me quickly)",
+   "audience": "people interested in high-protein vegetarian recipes and easy healthy meals",
+   "tone": [
+    "educational",
+    "motivational"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-lit, close-up shots with natural light and clear focus on food preparation steps; smooth editing.",
+    "information_density": "medium — clear visual steps with nutritional highlights but no spoken explanation.",
+    "watchability": "engaging pacing with appealing visuals and a final taste reaction to maintain interest."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Frame 1 shows the finished folded taco on a wooden board with text 'Mexican Taco 25G Protein, 422 Cals'.",
+     "Frames 3 and 4 show boiled rajma beans being added to a bowl and mashed with a masher.",
+     "Frames 5 and 6 show the filling being spread on a whole wheat tortilla on a stove pan labeled 'Philips'.",
+     "Frames 7 and 8 show chopped tomatoes being squeezed with a metal juicer and mixed with coriander in a wooden bowl.",
+     "Frame 9 shows the filling layered with creamy sauce and salsa on the tortilla.",
+     "Frame 2 and 10 show the creator tasting the wrap and giving a positive expression with the text 'so good.'"
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact quantities of some ingredients like tofu and spices are not visible in frames, only inferred from caption.",
+    "No spoken audio to confirm recipe details or creator's commentary.",
+    "No visible brand on food packaging except the Philips stove."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/DaAkBa1MZ5j.jpg",
+   "frames": [
+    "assets/frames/DaAkBa1MZ5j/f1.jpg",
+    "assets/frames/DaAkBa1MZ5j/f2.jpg",
+    "assets/frames/DaAkBa1MZ5j/f3.jpg",
+    "assets/frames/DaAkBa1MZ5j/f4.jpg",
+    "assets/frames/DaAkBa1MZ5j/f5.jpg",
+    "assets/frames/DaAkBa1MZ5j/f6.jpg"
+   ]
+  },
+  {
+   "id": "DZ4vPpTM_Za",
+   "creator": "fit.khurana",
+   "url": "https://www.instagram.com/p/DZ4vPpTM_Za/",
+   "caption": "Recipe ⬇️ (447 Cals, 40g P)\n\nIngredients - 2 Toasties\n\n🧀 80g High Protein Paneer (used ID)\n🍞 2 Slices Double Protein Bread (Used Protein Chef)\n🌶️ 2-3 tbsp Pizza Pasta Sauce\n🌽 Sweet Corn 1 tbsp\n🍄 Mushrooms 2-3\n🫑 Capsicum 3 tbsp\n🧅 Onion 5-6 slices\n🧀 20-30g Mozzarella Cheese\n\nHow to Make -\n\n1. Airfry the bread slices at 180 for 3-4 mins until you are chopping veggies.\n2. Spread 1-1.5 tbsp Pizza Sauce on each slice.\n3. Coat the paneer in 1/2 tsp olive oil, salt and pepper and add to the toasties. \n4. Top with corn, mushrooms, capsicum and onion.\n5. Add the mozzarella cheese on top.\n6. Air fry at 180 for another 4-5 mins until cheese gets golden brown. \n\n✅Should I do more savory or sweet breakfast options? Bataooo➡️\n\nhigh protein, protein toast, vegetarian protein, healthy snacks, balanced meals, weight loss recipes, easy recipes, paneer recipes, high protein breakfast, quick breakfast recipes, pizza toasties",
+   "hashtags": [],
+   "timestamp": "2026-06-22T11:34:45.000Z",
+   "views": 3672143,
+   "likes": 69882,
+   "comments": 389,
+   "duration": 32,
+   "framesUsed": 8,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Thumbnail and caption describe a high-protein food recipe with ingredients and cooking steps",
+    "confidence": 0.9,
+    "signal": "both",
+    "subject": "Mini protein pizzas recipe with macros"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel focuses on a recipe and the nutritional content of the food being prepared.",
+   "hook": "Nau minute mein agar tumhe 40 gram protein wala pizza mil raha hai, wo bhi 450 calories ke andar...",
+   "summary": "A quick recipe for high-protein mini pizzas under 450 calories is demonstrated and tasted.",
+   "detail": "The creator shows how to make mini protein pizzas using high-protein paneer, double protein bread, and various vegetables topped with mozzarella cheese. The bread is air-fried first, then topped with sauce, seasoned paneer, vegetables, and cheese before air-frying again until golden. The creator tastes the finished pizzas and highlights their high protein content (40g) and moderate calories (447). The reel ends with a question inviting viewers to suggest more savory or sweet breakfast options.",
+   "topic": "nutrition",
+   "subTopics": [
+    "high protein recipes",
+    "vegetarian protein",
+    "quick breakfast",
+    "healthy snacks"
+   ],
+   "format": "tutorial",
+   "setting": "home kitchen — a clean, well-lit kitchen space with a wooden cutting board and air fryer visible",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 1,
+    "note": "solo creator in a home kitchen setting"
+   },
+   "exercises": [],
+   "foods": [
+    "high protein paneer",
+    "double protein bread",
+    "pizza pasta sauce",
+    "sweet corn",
+    "mushrooms",
+    "capsicum",
+    "onion",
+    "mozzarella cheese"
+   ],
+   "equipment": [
+    "air fryer",
+    "plate",
+    "cutting board"
+   ],
+   "brands": [
+    {
+     "name": "PHILIPS",
+     "where": "frame 7 on the air fryer",
+     "confidence": 0.9
+    },
+    {
+     "name": "Protein Chef",
+     "where": "mentioned in caption as bread brand, not visually confirmed",
+     "confidence": 0.3
+    },
+    {
+     "name": "ID",
+     "where": "mentioned in caption as paneer brand, not visually confirmed",
+     "confidence": 0.3
+    }
+   ],
+   "graphics": [
+    "Mini Protein Pizzas 🍕",
+    "40G PROTEIN | 447 CALS",
+    "craving hogi?!",
+    "banega utne mein",
+    "ki can ke sath",
+    "I like using these",
+    "with low-fat paneer,",
+    "that slap harder"
+   ],
+   "subtitles": [
+    "Nau minute mein agar tumhe 40 gram protein wala pizza mil raha hai,",
+    "wo bhi 450 calories ke andar to tum Fit Khurana ki rasoee mein aa chuke ho.",
+    "Bhai gym ke baad roz subah-subah pizza khane mile to kisko craving hogi?"
+   ],
+   "claims": [
+    "This mini protein pizza contains 40 grams of protein and 447 calories.",
+    "The recipe uses high protein paneer and double protein bread to increase protein content.",
+    "Air frying the bread before and after adding toppings helps achieve a crispy texture and golden cheese.",
+    "This is a quick and healthy breakfast option suitable for post-workout nutrition."
+   ],
+   "cta": "Should I do more savory or sweet breakfast options? Bataooo (Tell me)",
+   "audience": "people looking for high-protein, quick, vegetarian breakfast or snack recipes",
+   "tone": [
+    "educational",
+    "motivational",
+    "friendly"
+   ],
+   "language": "hinglish",
+   "quality": {
+    "production": "Well-lit, close-up shots with clear focus on food preparation and tasting; steady framing.",
+    "information_density": "medium — clear step-by-step visuals with concise nutritional info and ingredient list.",
+    "watchability": "high — engaging pacing with a strong hook and appealing food visuals."
+   },
+   "quotes": [
+    "Nau minute mein agar tumhe 40 gram protein wala pizza mil raha hai,",
+    "wo bhi 450 calories ke andar to tum Fit Khurana ki rasoee mein aa chuke ho.",
+    "Bhai gym ke baad roz subah-subah pizza khane mile to kisko craving hogi?"
+   ],
+   "evidence": {
+    "from_frames": [
+     "Frame 1 shows finished mini protein pizzas on a plate with text overlay 'Mini Protein Pizzas 40G PROTEIN | 447 CALS'.",
+     "Frames 4 and 5 show chopped vegetables and paneer cubes being prepared.",
+     "Frame 6 shows two toasted bread slices on a wooden board with text 'I like using these'.",
+     "Frame 7 shows an air fryer with 'PHILIPS' brand visible and pizzas inside.",
+     "Frames 2 and 3 show the creator tasting and reacting to the pizza, holding a plate."
+    ],
+    "from_audio": [
+     "Nau minute mein agar tumhe 40 gram protein wala pizza mil raha hai,",
+     "wo bhi 450 calories ke andar to tum Fit Khurana ki rasoee mein aa chuke ho.",
+     "Bhai gym ke baad roz subah-subah pizza khane mile to kisko craving hogi?"
+    ]
+   },
+   "uncertainties": [
+    "Exact brands of bread and paneer are mentioned in caption but not visually confirmed in frames.",
+    "Nutritional values are stated in caption and audio but not verified independently.",
+    "Some motion steps like air frying timing and layering are inferred from captions and text overlays, not fully visible in frames."
+   ],
+   "transcript": "नौ मिरिट में अगर तुम्हें 40 ग्राम प्रोटीन वाला पीजा मिल रहा है, वो भी 450 कालोरीज के अंदर तो तुम फिट खुरावा की रिसोई में आ चुके हो। भाई जिम के बाद रोज सुबा-सुबा पीजा खाने मिल जाये तो किसको क्रेविंग होगी?",
+   "thumb": "assets/thumbs/DZ4vPpTM_Za.jpg",
+   "frames": [
+    "assets/frames/DZ4vPpTM_Za/f1.jpg",
+    "assets/frames/DZ4vPpTM_Za/f2.jpg",
+    "assets/frames/DZ4vPpTM_Za/f3.jpg",
+    "assets/frames/DZ4vPpTM_Za/f4.jpg",
+    "assets/frames/DZ4vPpTM_Za/f5.jpg",
+    "assets/frames/DZ4vPpTM_Za/f6.jpg"
+   ]
+  },
+  {
+   "id": "DZhMN63I6qU",
+   "creator": "hustlerani",
+   "url": "https://www.instagram.com/p/DZhMN63I6qU/",
+   "caption": "running to celebrate my last weekend here! the incline killed me but atleast I’m done with it 👍",
+   "hashtags": [],
+   "timestamp": "2026-06-13T08:02:40.000Z",
+   "views": 260234,
+   "likes": 6914,
+   "comments": 39,
+   "duration": 90,
+   "framesUsed": 20,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Caption describes running with incline and thumbnail shows athletic pose, clearly training",
+    "confidence": 0.9,
+    "signal": "both",
+    "subject": "running session with incline"
+   },
+   "bucket": "fitness",
+   "bucketReason": "The subject is focused on running performance and endurance during an outdoor workout.",
+   "hook": "That I'm wearing to run speed, not for dignity",
+   "summary": "A fitness creator shares a scenic and challenging outdoor run on an incline to mark the end of her residency.",
+   "detail": "The reel begins with the creator indoors showing her running outfit, then transitions to her running outdoors through a village with scenic views and old buildings. She runs on an incline, visibly exerting effort, and narratively marks this run as symbolic of completing her residency. The video ends with her enjoying a cold coffee drink called a freddo. There is no spoken audio, only burned-in subtitles and ambient sounds.",
+   "topic": "endurance",
+   "subTopics": [
+    "outdoor running",
+    "incline running",
+    "running gear"
+   ],
+   "format": "vlog",
+   "setting": "outdoor — village streets and countryside with some indoor shots at start and end",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 1,
+    "note": "solo, running through quiet village streets and natural surroundings"
+   },
+   "exercises": [
+    "running"
+   ],
+   "foods": [
+    "freddo coffee"
+   ],
+   "equipment": [
+    "running shoes",
+    "earbuds",
+    "smartwatch"
+   ],
+   "brands": [
+    {
+     "name": "ANDS Cafe",
+     "where": "on the red coffee cup in the last frames",
+     "confidence": 0.9
+    },
+    {
+     "name": "Gymshark",
+     "where": "on the creator's blue shorts",
+     "confidence": 0.8
+    }
+   ],
+   "graphics": [
+    "that I'm wearing to run",
+    "speed, not for dignity",
+    "we'll test out the speed",
+    "If you think I'm",
+    "with the incline",
+    "monastery, which",
+    "way, in this village",
+    "residency",
+    "symbolic for me to mark",
+    "journey and stay here",
+    "Seeing and saying hello",
+    "I'm so",
+    "but ran a 3.2",
+    "Got myself a freddo"
+   ],
+   "subtitles": [
+    "that I'm wearing to run",
+    "speed, not for dignity",
+    "we'll test out the speed"
+   ],
+   "claims": [
+    "The creator is running to celebrate her last weekend at a residency.",
+    "The incline during the run was challenging.",
+    "She ran a 3.2 (likely kilometers or miles) despite the difficulty.",
+    "The run and location are symbolic to mark the end of her residency."
+   ],
+   "cta": null,
+   "audience": "runners and fitness enthusiasts interested in outdoor endurance training",
+   "tone": [
+    "motivational",
+    "calm"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-framed vertical shots with natural lighting and smooth handheld camera work.",
+    "information_density": "low — mostly visual storytelling with minimal text and no speech.",
+    "watchability": "Good pacing with a clear narrative arc and scenic visuals that maintain interest."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Frames 1-4: Creator indoors showing running outfit and talking to camera with subtitles.",
+     "Frames 5-15: Outdoor running shots through village streets, hills, and scenic views with subtitles describing the run and residency.",
+     "Frames 16-20: Creator finishing run, holding a red coffee cup labeled 'ANDS Cafe', drinking a freddo coffee.",
+     "Visible Gymshark logo on shorts in multiple frames.",
+     "Earbuds and smartwatch visible on creator during run."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact distance unit for '3.2' run is not specified in frames or captions.",
+    "No audible speech to confirm some subtitle context; interpretation based on visible text only."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/DZhMN63I6qU.jpg",
+   "frames": [
+    "assets/frames/DZhMN63I6qU/f1.jpg",
+    "assets/frames/DZhMN63I6qU/f2.jpg",
+    "assets/frames/DZhMN63I6qU/f3.jpg",
+    "assets/frames/DZhMN63I6qU/f4.jpg",
+    "assets/frames/DZhMN63I6qU/f5.jpg",
+    "assets/frames/DZhMN63I6qU/f6.jpg"
+   ]
+  },
+  {
+   "id": "DYMb8YrPYcp",
+   "creator": "anmolraina13",
+   "url": "https://www.instagram.com/p/DYMb8YrPYcp/",
+   "caption": "It’s official babyyy 🏊🚴🏃\n\n#ironman #ironman703",
+   "hashtags": [
+    "ironman",
+    "ironman703"
+   ],
+   "timestamp": "2026-05-11T10:09:18.000Z",
+   "views": 930278,
+   "likes": 38144,
+   "comments": 132,
+   "duration": 59,
+   "framesUsed": 12,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Thumbnail shows Ironman 70.3 registration confirmation, caption confirms triathlon event.",
+    "confidence": 1.0,
+    "signal": "both"
+   },
+   "bucket": null,
+   "bucketReason": null,
+   "hook": "आइरन्मान करने के बारे में मैं बहुत दिनों से सोच रहा हूँ, लेकिन आज वो डिसिजिन फाइनल हो गई।",
+   "summary": "Anmol Raina announces his decision to train for a half Ironman triathlon and shares his initial preparations and challenges.",
+   "detail": "The creator starts by explaining his long-standing fascination with the Ironman triathlon, inspired by a US cousin whose Navy SEAL friends completed it. He reveals his decision to take on the challenge himself, describing the half Ironman distances: a 1.9 km swim, 90 km bike ride, and 21.1 km run. Despite his weak swimming skills and unfamiliarity with road biking, he expresses excitement about learning these skills from scratch with coaching. The video shows him running, swimming, and cycling, along with footage of his training metrics and meals, ending with a call to follow his journey.",
+   "topic": "training",
+   "subTopics": [
+    "triathlon",
+    "swimming",
+    "running",
+    "cycling",
+    "skill acquisition"
+   ],
+   "format": "vlog",
+   "setting": "outdoor and indoor — running outdoors, swimming in a pool, cycling shop visit, and indoor scenes",
+   "people": {},
+   "exercises": [
+    "running",
+    "swimming"
+   ],
+   "foods": [
+    "waffles with banana and chocolate",
+    "pasta",
+    "grilled corn",
+    "sausages"
+   ],
+   "equipment": [
+    "heart rate chest strap",
+    "running shoes",
+    "swimming cap",
+    "bicycle"
+   ],
+   "brands": [],
+   "graphics": [],
+   "subtitles": [],
+   "claims": [
+    "A half Ironman consists of a 1.9 km swim, 90 km bike ride, and 21.1 km run.",
+    "The creator's swimming is very poor and he needs coaching to learn from scratch.",
+    "He has experience in mountain biking but not in road biking.",
+    "Learning a new skill from scratch can be very enjoyable.",
+    "He completed a Sunday long run of 14 km with warm-up and cool-down segments and a 10 km tempo run at 4:40 pace."
+   ],
+   "cta": "Follow for the journey",
+   "audience": "endurance athletes and fitness enthusiasts interested in triathlon training",
+   "tone": [
+    "motivational",
+    "educational",
+    "personal"
+   ],
+   "language": "hinglish",
+   "quality": {
+    "production": "Well-lit, clear framing with smooth transitions between running, swimming, and indoor scenes.",
+    "information_density": "medium — provides personal story, triathlon basics, and training insights without heavy technical detail.",
+    "watchability": "Good pacing with a strong personal hook and varied visuals keeping viewer interest."
+   },
+   "quotes": [
+    "आइरन्मान करने के बारे में मैं बहुत दिनों से सोच रहा हूँ, लेकिन आज वो डिसिजिन फाइनल हो गई।",
+    "मुझे पहली बारे आइरन्मान करने के बारे में एक US करण ने बताया था, जिसके नेवी सील फ्रेंड्स ने वो किया था।",
+    "अब विश्वार करना बात है कि मेरी स्विमिंग बहुत बेकार है, तो मेरे कोचिंग लेकर स्क्राच से सीखनी पड़ीगी।",
+    "एक स्किल को स्क्राच से सीखने में बहुत मज़ा आने वाला है।",
+    "आज मेरा एक संडे लॉंग रन था, जिसमें 14k रन, 2k वार्म अप, 2k कूल डाउन, और बीच में 10k टेमपो।"
+   ],
+   "evidence": {
+    "from_frames": [
+     "Creator running outdoors shirtless with heart rate strap and sunglasses.",
+     "Indoor scene showing creator talking and preparing.",
+     "Swimming pool footage with creator in swim cap practicing swimming.",
+     "Cycling shop scene with creator inspecting a bike.",
+     "On-screen text showing run pace and distance metrics.",
+     "Food shots of waffles, pasta, and other meals."
+    ],
+    "from_audio": [
+     "Creator narrates his decision to do Ironman and inspiration from US cousin.",
+     "Explains half Ironman distances and his swimming and biking skill gaps.",
+     "Mentions taking coaching to learn swimming from scratch.",
+     "Describes his Sunday long run workout and swimming practice."
+    ]
+   },
+   "uncertainties": [
+    "Exact brand of running shoes and cycling equipment not identifiable from frames.",
+    "No specific coaching program or coach name mentioned.",
+    "No detailed training plan or timeline for Ironman preparation provided."
+   ],
+   "transcript": "आइरन्मान करने के बारे में मैं बहुत दिनों से सोच रहा हूँ, लेकिन आज वो डिसिजिन फाइनल हो गई। मुझे पहली बारे आइरन्मान करने के बारे में एक US करण ने बताया था, जिसके नेवी सील फ्रेंड्स ने वो किया वा था, और तब से ही वो मुझे काफ़ी फैसिनेटिंग लगता है। अब विश्वार करना बात है कि मेरी स्विमिंग बहुत बेकार है, तो मेरे कोचिंग लेकर स्क्राच से सीखनी पड़ीगी,",
+   "thumb": "assets/thumbs/DYMb8YrPYcp.jpg",
+   "frames": [
+    "assets/frames/DYMb8YrPYcp/f1.jpg",
+    "assets/frames/DYMb8YrPYcp/f2.jpg",
+    "assets/frames/DYMb8YrPYcp/f3.jpg",
+    "assets/frames/DYMb8YrPYcp/f4.jpg",
+    "assets/frames/DYMb8YrPYcp/f5.jpg",
+    "assets/frames/DYMb8YrPYcp/f6.jpg"
+   ]
+  },
+  {
+   "id": "C3Kle_zymu4",
+   "creator": "fit.khurana",
+   "url": "https://www.instagram.com/p/C3Kle_zymu4/",
+   "caption": "Recipe🔽 (30g Protein - Kebabs + Greek Yogurt Dip)\n\n1. Boil 35g of Soya Chunks and properly squeeze them to drain out all the water\n2. In a kadhai, add 1 tsp ghee, 1 tsp jeera, 2-3 cloves chopped garlic and 2 chopped chillies\n3. Then add 1 small chopped onion. Let it cook for 2 mins and add 1 cup fresh peas (incase you use frozen peas, soak in lukewarm water for a while).\n4. Let the peas cook for 5 minutes and then add salt, 1 tsp red chilli powder, 1 tsp aamchur, 1 tsp garam masala, 1/2 tsp coriander powder, pinch of haldi and some rock salt.\n5. Mix well and then add a tbsp of rice flour. Mix again and transfer this to a grinder jar. Add 1/2 slice of bread and handful of coriander and grind this mixture into a fine paste.\n6. To this, add the soya chunks and grind again\n7. Now keep this paste in the fridge for 10 minutes and apply oil on your hands and start making small balls.\n8. On a non stick pan, brush some ghee and cook this kebabs on low-medium flame for a few minutes and until they have this beautiful brown color.\n9. Serve with greek yogurt for more protein. Top the yogurt with red chilli powder, chaat masala and pomegranate (my star ingredient which goes so well with these)\n\nHave you checked out my high protein asian rice bowl recipe which is another flavor explosion?\nComment “Asian” and I will dm you the link",
+   "hashtags": [],
+   "timestamp": "2024-02-10T11:32:33.000Z",
+   "views": 13779179,
+   "likes": 227498,
+   "comments": 1270,
+   "duration": 47,
+   "framesUsed": 12,
+   "engine": "OpenAI gpt-4.1-mini",
+   "shortlist": {
+    "reason": "Thumbnail and caption show recipe and protein content",
+    "confidence": 0.95,
+    "signal": "both",
+    "subject": "Soya kebabs recipe with protein info"
+   },
+   "bucket": "nutrition",
+   "bucketReason": "The reel focuses on preparing a high-protein food recipe and its nutritional benefits.",
+   "hook": "Soya Kebabs - 30g of Protein",
+   "summary": "A step-by-step visual recipe for making high-protein soya kebabs with a Greek yogurt dip.",
+   "detail": "The reel visually demonstrates the preparation of soya kebabs starting from boiling soya chunks, sautéing spices and vegetables, mixing and grinding the ingredients into a paste, shaping the kebabs, and cooking them on a pan. The final frame shows the cooked kebabs served with a Greek yogurt dip topped with pomegranate seeds and spices. The reel emphasizes the high protein content of the dish (30g) and highlights the use of natural ingredients and spices. There is no spoken audio, and the instructions are conveyed purely through visuals and on-screen text.",
+   "topic": "nutrition",
+   "subTopics": [
+    "high protein recipes",
+    "plant-based protein",
+    "Indian cooking",
+    "healthy snacks"
+   ],
+   "format": "tutorial",
+   "setting": "kitchen — a home kitchen with plants and cooking utensils visible",
+   "people": {
+    "creator_present": true,
+    "max_in_any_frame": 1,
+    "note": "solo cooking demonstration in a home kitchen"
+   },
+   "exercises": [],
+   "foods": [
+    "soya chunks",
+    "onion",
+    "green peas",
+    "garlic",
+    "green chillies",
+    "spices (red chilli powder, garam masala, coriander powder, turmeric, aamchur)",
+    "rice flour",
+    "bread slice",
+    "coriander leaves",
+    "Greek yogurt",
+    "pomegranate seeds",
+    "ghee"
+   ],
+   "equipment": [
+    "kadhai (wok)",
+    "grinder jar",
+    "non-stick pan",
+    "metal mixing bowls"
+   ],
+   "brands": [],
+   "graphics": [
+    "Soya Kebabs",
+    "-30g of Protein-"
+   ],
+   "subtitles": [],
+   "claims": [
+    "The soya kebabs provide 30 grams of protein.",
+    "Using Greek yogurt as a dip adds more protein.",
+    "Pomegranate is a star ingredient that pairs well with the kebabs."
+   ],
+   "cta": "Comment “Asian” to receive a link to another high-protein Asian rice bowl recipe.",
+   "audience": "people interested in high-protein, plant-based recipes and healthy cooking",
+   "tone": [
+    "educational",
+    "motivational"
+   ],
+   "language": "none",
+   "quality": {
+    "production": "Well-lit, close-up shots with clear focus on ingredients and cooking steps; smooth editing.",
+    "information_density": "medium — visually detailed recipe steps without spoken explanation.",
+    "watchability": "engaging pacing with clear visual progression from raw ingredients to finished dish."
+   },
+   "quotes": [],
+   "evidence": {
+    "from_frames": [
+     "Frame 1: Close-up of finished soya kebabs with Greek yogurt dip and pomegranate seeds, with on-screen text 'Soya Kebabs -30g of Protein-'.",
+     "Frame 2: Hands squeezing boiled soya chunks over a metal bowl.",
+     "Frames 3-8: Cooking steps in a kadhai including adding ghee, jeera, garlic, chillies, chopped onion, fresh peas, and spices; mixing in rice flour.",
+     "Frames 9-10: Grinding the cooked mixture with bread slice and coriander leaves, then adding soya chunks and grinding again.",
+     "Frame 11: Shaping the paste into small balls and cooking them on a non-stick pan with ghee.",
+     "Frame 12: Final presentation of browned kebabs served with Greek yogurt topped with red chilli powder and pomegranate seeds."
+    ],
+    "from_audio": []
+   },
+   "uncertainties": [
+    "Exact quantities of some spices and ingredients are inferred from visual cues but not explicitly stated in the frames.",
+    "No audible instructions or speech to confirm exact recipe details or timing."
+   ],
+   "transcript": "",
+   "thumb": "assets/thumbs/C3Kle_zymu4.jpg",
+   "frames": [
+    "assets/frames/C3Kle_zymu4/f1.jpg",
+    "assets/frames/C3Kle_zymu4/f2.jpg",
+    "assets/frames/C3Kle_zymu4/f3.jpg",
+    "assets/frames/C3Kle_zymu4/f4.jpg",
+    "assets/frames/C3Kle_zymu4/f5.jpg",
+    "assets/frames/C3Kle_zymu4/f6.jpg"
+   ]
+  }
+ ]
+};

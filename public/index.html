@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lens — field notes</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='15' fill='%23c67139'/><circle cx='16' cy='16' r='5' fill='%23f5ead8'/></svg>">
+<script>
+  /* Serve the runtime's React/Babel from this deployment instead of unpkg, so the
+     app doesn't go down if a CDN does. The keys must match the URLs inside
+     support.js exactly — that is its documented override hook.
+     (organic.css still pulls Caprasimo/Figtree from Google Fonts; without them
+     the page falls back to system fonts but works.) */
+  window.__resources = {
+    "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "/vendor/react.production.min.js",
+    "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "/vendor/react-dom.production.min.js",
+    "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js": "/vendor/babel.min.js"
+  };
+
+  /* The archive assistant. The prototype called window.claude.complete, which only
+     exists inside the design tool. This points that same call at our own
+     serverless function, so the shipped app reaches OpenAI via /api/chat and the
+     page logic below stays exactly as designed. */
+  window.claude = {
+    complete: async ({ system, messages }) => {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ system, messages })
+      });
+      if (!res.ok) {
+        const detail = await res.text().catch(() => "");
+        throw new Error("chat " + res.status + ": " + detail.slice(0, 200));
+      }
+      return (await res.json()).reply;
+    }
+  };
+</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="organic.css">
+  <style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-accent-700); text-decoration: none; }
+    a:hover { color: var(--color-accent-800); text-decoration: underline; }
+    ::-webkit-scrollbar { height: 8px; width: 8px; }
+    ::-webkit-scrollbar-thumb { background: var(--color-neutral-300); border-radius: 999px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    @keyframes lensUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @keyframes lensIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes lensSlide { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  </style>
+  <script src="hub-data.js"></script>
+</helmet>
+
+<div style="min-height: 100vh; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding-bottom: 80px">
+
+  <header style="position: sticky; top: 0; z-index: 60; background: var(--color-bg); border-bottom: 1px solid var(--color-divider)">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; gap: 28px">
+      <div style="display: flex; align-items: center; gap: 12px; margin-right: auto; cursor: pointer" onClick="{{ goFeed }}">
+        <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--color-accent-500); display: grid; place-items: center; flex: none">
+          <div style="width: 12px; height: 12px; border-radius: 50%; background: var(--color-bg)"></div>
+        </div>
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 20px; line-height: 1">Lens</div>
+          <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5">field notes</div>
+        </div>
+      </div>
+      <nav style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap">
+        <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="6">
+          <button style="{{ nav.style }}" onClick="{{ nav.go }}">{{ nav.label }}</button>
+        </sc-for>
+      </nav>
+      <button class="btn btn-primary" style="flex: none" onClick="{{ openGlobalChat }}">Ask the archive</button>
+    </div>
+  </header>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 0 28px">
+
+    <sc-if value="{{ isFeed }}" hint-placeholder-val="{{ true }}">
+      <section>
+        <div style="padding: 72px 0 36px">
+          <div style="display: flex; gap: 48px; align-items: center; flex-wrap: wrap">
+            <div style="flex: 1 1 420px; min-width: 0">
+              <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 18px">{{ runStamp }}</div>
+              <h1 style="font-size: clamp(42px, 5.4vw, 68px); line-height: 0.94; letter-spacing: -0.03em; margin: 0 0 20px">Everything they posted, without the scroll.</h1>
+              <p style="font-size: 17px; max-width: 560px; opacity: 0.75; margin: 0">{{ heroLine }}</p>
+            </div>
+            <div style="flex: 0 1 240px; position: relative; height: 240px; min-width: 200px">
+              <div style="position: absolute; top: 0; right: 0; width: 240px; height: 240px; border-radius: 50%; background: var(--color-accent-2-200)"></div>
+              <div style="position: absolute; bottom: -18px; right: 172px; width: 96px; height: 96px; border-radius: 50%; border: 13px solid var(--color-accent-300)"></div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px">
+            <div style="flex: 1 1 440px; min-width: 300px; background: var(--color-surface); border-radius: 30px; padding: 16px; display: flex; align-items: center; gap: 18px; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease" style-hover="transform: translateY(-3px); box-shadow: var(--shadow-md)" onClick="{{ openLatest }}">
+              <img src="{{ latestThumb }}" alt="{{ latestHook }}" style="width: 82px; height: 104px; object-fit: cover; border-radius: 20px; flex: none; filter: saturate(0.74) contrast(0.92) brightness(1.05)" />
+              <div style="min-width: 0">
+                <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 8px">Newest · {{ latestMeta }}</div>
+                <div style="font-family: var(--font-heading); font-size: 20px; line-height: 1.2">{{ latestHook }}</div>
+              </div>
+            </div>
+            <div style="flex: 1 1 240px; min-width: 220px; background: var(--color-accent-2-200); color: var(--color-accent-2-900); border-radius: 30px; padding: 22px 26px; display: flex; flex-direction: column; justify-content: center; cursor: pointer; transition: transform 0.25s ease" style-hover="transform: translateY(-3px)" onClick="{{ goBrief }}">
+              <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; margin-bottom: 8px">Catch up</div>
+              <div style="font-family: var(--font-heading); font-size: 22px; line-height: 1.15">{{ briefTeaser }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 22px 24px; background: var(--color-surface); border-radius: 28px; margin-bottom: 36px">
+          <sc-for list="{{ filterGroups }}" as="fgroup" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+              <span style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; width: 72px; flex: none">{{ fgroup.label }}</span>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                <sc-for list="{{ fgroup.opts }}" as="fopt" hint-placeholder-count="4">
+                  <button style="{{ fopt.style }}" onClick="{{ fopt.pick }}">{{ fopt.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px">
+          <sc-for list="{{ feedCards }}" as="card" hint-placeholder-count="6">
+            <article style="{{ card.wrap }}" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg)" onClick="{{ card.open }}">
+              <div style="{{ card.media }}">
+                <img src="{{ card.thumb }}" alt="{{ card.summary }}" style="{{ card.img }}" />
+                <div style="{{ card.badge }}">{{ card.topic }}</div>
+              </div>
+              <div style="{{ card.body }}">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px">
+                  <div style="{{ card.mono }}">{{ card.initials }}</div>
+                  <span style="font-size: 12px; opacity: 0.6">{{ card.handle }}</span>
+                  <span style="font-size: 12px; opacity: 0.35">·</span>
+                  <span style="font-size: 12px; opacity: 0.6">{{ card.date }}</span>
+                </div>
+                <h3 style="{{ card.titleStyle }}">{{ card.title }}</h3>
+                <p style="{{ card.sumStyle }}">{{ card.summary }}</p>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 14px">
+                  <sc-for list="{{ card.chips }}" as="chip" hint-placeholder-count="3">
+                    <span style="{{ chip.style }}">{{ chip.label }}</span>
+                  </sc-for>
+                </div>
+                <div style="display: flex; gap: 16px; margin-top: 14px; font-size: 11px; letter-spacing: 0.04em; opacity: 0.5">
+                  <span>{{ card.views }} views</span>
+                  <span>{{ card.likes }} likes</span>
+                  <span>{{ card.length }}</span>
+                </div>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+        <sc-if value="{{ feedEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 60px 0; text-align: center; opacity: 0.6">Nothing matches those filters yet.</div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isBrief }}" hint-placeholder-val="{{ false }}">
+      <section style="padding-top: 64px">
+        <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Daily brief</div>
+        <h1 style="font-size: clamp(38px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 18px; max-width: 700px">The gist, day by day.</h1>
+        <p style="max-width: 560px; opacity: 0.7; margin: 0 0 44px">One line per post, plus the single thing worth keeping. Read top to bottom in under a minute.</p>
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <sc-for list="{{ briefDays }}" as="day" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 148px 1fr; gap: 24px; align-items: start; background: var(--color-surface); border-radius: 32px; padding: 26px 28px">
+              <div style="position: sticky; top: 90px">
+                <div style="font-family: var(--font-heading); font-size: 30px; line-height: 1">{{ day.day }}</div>
+                <div style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5; margin-top: 4px">{{ day.month }}</div>
+                <div style="font-size: 12px; opacity: 0.45; margin-top: 10px">{{ day.countLabel }}</div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 22px">
+                <sc-for list="{{ day.entries }}" as="entry" hint-placeholder-count="2">
+                  <div style="display: grid; grid-template-columns: 92px 1fr; gap: 18px; cursor: pointer" onClick="{{ entry.open }}">
+                    <img src="{{ entry.thumb }}" alt="{{ entry.summary }}" style="width: 92px; height: 118px; object-fit: cover; border-radius: 20px; filter: saturate(0.72) contrast(0.92) brightness(1.04)" />
+                    <div>
+                      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap">
+                        <div style="{{ entry.mono }}">{{ entry.initials }}</div>
+                        <span style="font-size: 12px; opacity: 0.6">{{ entry.handle }}</span>
+                        <span style="{{ entry.chipStyle }}">{{ entry.topic }}</span>
+                      </div>
+                      <div style="font-family: var(--font-heading); font-size: 19px; line-height: 1.22; margin-bottom: 10px">{{ entry.summary }}</div>
+                      <div style="display: flex; gap: 10px; align-items: flex-start">
+                        <div style="width: 3px; align-self: stretch; border-radius: 999px; background: var(--color-accent-400); flex: none"></div>
+                        <p style="margin: 0; font-size: 14px; opacity: 0.8">{{ entry.takeaway }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isTopics }}" hint-placeholder-val="{{ false }}">
+      <section style="padding-top: 64px">
+        <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Topic hubs</div>
+        <h1 style="font-size: clamp(38px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 18px">Sorted by what it's about.</h1>
+        <p style="max-width: 560px; opacity: 0.7; margin: 0 0 44px">Tags come straight out of the pipeline — primary topic, sub-topics and format, as the model labelled them.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px">
+          <sc-for list="{{ topicCards }}" as="hub" hint-placeholder-count="4">
+            <div style="{{ hub.wrap }}" style-hover="transform: translateY(-4px)" onClick="{{ hub.open }}">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px">
+                <h2 style="font-size: 30px; margin: 0; text-transform: capitalize">{{ hub.name }}</h2>
+                <div style="{{ hub.dot }}">{{ hub.count }}</div>
+              </div>
+              <p style="margin: 14px 0 18px; font-size: 14px; opacity: 0.75">{{ hub.blurb }}</p>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                <sc-for list="{{ hub.subs }}" as="sub" hint-placeholder-count="4">
+                  <span style="{{ sub.style }}">{{ sub.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isTopic }}" hint-placeholder-val="{{ false }}">
+      <section style="padding-top: 48px">
+        <button class="btn btn-ghost" style="margin-bottom: 24px" onClick="{{ goTopics }}">← All topics</button>
+        <div style="{{ topicHero }}">
+          <h1 style="font-size: clamp(40px, 6vw, 68px); margin: 0 0 12px; text-transform: capitalize; letter-spacing: -0.03em">{{ topicName }}</h1>
+          <p style="margin: 0; max-width: 620px; opacity: 0.85">{{ topicBlurb }}</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin: 32px 0 44px">
+          <sc-for list="{{ topicGroups }}" as="tgroup" hint-placeholder-count="3">
+            <div style="background: var(--color-surface); border-radius: 28px; padding: 22px 24px">
+              <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 14px">{{ tgroup.label }}</div>
+              <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; font-size: 14px">
+                <sc-for list="{{ tgroup.items }}" as="titem" hint-placeholder-count="4">
+                  <li>{{ titem.text }}</li>
+                </sc-for>
+              </ul>
+            </div>
+          </sc-for>
+        </div>
+        <h3 style="font-size: 22px; margin: 0 0 18px">Reels in this hub</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px">
+          <sc-for list="{{ topicReels }}" as="treel" hint-placeholder-count="3">
+            <article style="{{ treel.wrap }}" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg)" onClick="{{ treel.open }}">
+              <div style="{{ treel.media }}">
+                <img src="{{ treel.thumb }}" alt="{{ treel.summary }}" style="{{ treel.img }}" />
+              </div>
+              <div style="{{ treel.body }}">
+                <div style="font-size: 12px; opacity: 0.55; margin-bottom: 10px">{{ treel.handle }} · {{ treel.date }}</div>
+                <h3 style="{{ treel.titleStyle }}">{{ treel.title }}</h3>
+                <p style="{{ treel.sumStyle }}">{{ treel.summary }}</p>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isCreators }}" hint-placeholder-val="{{ false }}">
+      <section style="padding-top: 64px">
+        <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Creators</div>
+        <h1 style="font-size: clamp(38px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 44px">Who you're following.</h1>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px">
+          <sc-for list="{{ creatorCards }}" as="person" hint-placeholder-count="2">
+            <div style="background: var(--color-surface); border-radius: 34px; padding: 30px; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg)" onClick="{{ person.open }}">
+              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 22px">
+                <div style="{{ person.mono }}">{{ person.initials }}</div>
+                <div>
+                  <div style="font-family: var(--font-heading); font-size: 24px; line-height: 1.1">{{ person.name }}</div>
+                  <div style="font-size: 13px; opacity: 0.55">{{ person.handle }}</div>
+                </div>
+              </div>
+              <div style="display: flex; height: 10px; border-radius: 999px; overflow: hidden; margin-bottom: 12px">
+                <sc-for list="{{ person.mix }}" as="bar" hint-placeholder-count="3">
+                  <div style="{{ bar.style }}"></div>
+                </sc-for>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px">
+                <sc-for list="{{ person.mix }}" as="mixchip" hint-placeholder-count="3">
+                  <span style="{{ mixchip.chip }}">{{ mixchip.label }}</span>
+                </sc-for>
+              </div>
+              <p style="font-size: 14px; opacity: 0.75; margin: 0 0 20px">{{ person.blurb }}</p>
+              <div style="display: flex; gap: 20px">
+                <sc-for list="{{ person.stats }}" as="pstat" hint-placeholder-count="3">
+                  <div>
+                    <div style="font-family: var(--font-heading); font-size: 22px">{{ pstat.value }}</div>
+                    <div style="font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5">{{ pstat.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isCreator }}" hint-placeholder-val="{{ false }}">
+      <section style="padding-top: 48px">
+        <button class="btn btn-ghost" style="margin-bottom: 24px" onClick="{{ goCreators }}">← All creators</button>
+        <div style="display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 12px">
+          <div style="{{ cvMono }}">{{ cvInitials }}</div>
+          <div style="margin-right: auto">
+            <h1 style="font-size: clamp(38px, 5.4vw, 62px); margin: 0; letter-spacing: -0.03em; line-height: 1">{{ cvName }}</h1>
+            <div style="font-size: 15px; opacity: 0.55; margin-top: 6px">{{ cvHandle }}</div>
+          </div>
+          <button class="btn btn-primary" onClick="{{ openCreatorChat }}">{{ cvAskLabel }}</button>
+        </div>
+        <p style="max-width: 620px; opacity: 0.75; margin: 18px 0 32px">{{ cvBlurb }}</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px">
+          <sc-for list="{{ cvStats }}" as="cstat" hint-placeholder-count="4">
+            <div style="background: var(--color-surface); border-radius: 26px; padding: 20px 22px">
+              <div style="font-family: var(--font-heading); font-size: 30px; line-height: 1">{{ cstat.value }}</div>
+              <div style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; margin-top: 6px">{{ cstat.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin-bottom: 44px">
+          <sc-for list="{{ cvGroups }}" as="cgroup" hint-placeholder-count="3">
+            <div style="border: 1px solid var(--color-divider); border-radius: 28px; padding: 22px 24px">
+              <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 14px">{{ cgroup.label }}</div>
+              <div style="display: flex; gap: 7px; flex-wrap: wrap">
+                <sc-for list="{{ cgroup.items }}" as="citem" hint-placeholder-count="4">
+                  <span style="{{ citem.style }}">{{ citem.text }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <h3 style="font-size: 22px; margin: 0 0 18px">Everything analysed</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; margin-bottom: 40px">
+          <sc-for list="{{ cvReels }}" as="creel" hint-placeholder-count="3">
+            <article style="{{ creel.wrap }}" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg)" onClick="{{ creel.open }}">
+              <div style="{{ creel.media }}">
+                <img src="{{ creel.thumb }}" alt="{{ creel.summary }}" style="{{ creel.img }}" />
+                <div style="{{ creel.badge }}">{{ creel.topic }}</div>
+              </div>
+              <div style="{{ creel.body }}">
+                <div style="font-size: 12px; opacity: 0.55; margin-bottom: 10px">{{ creel.date }}</div>
+                <h3 style="{{ creel.titleStyle }}">{{ creel.title }}</h3>
+                <p style="{{ creel.sumStyle }}">{{ creel.summary }}</p>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ showEvidenceToggle }}" hint-placeholder-val="{{ true }}">
+          <div style="border-top: 1px solid var(--color-divider); padding-top: 20px">
+            <button class="btn btn-secondary" onClick="{{ toggleCvAi }}">{{ cvAiLabel }}</button>
+            <sc-if value="{{ cvAiOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top: 20px; background: var(--color-neutral-100); border-radius: 28px; padding: 24px 26px; animation: lensIn 0.3s ease">
+                <p style="font-size: 14px; opacity: 0.8; margin: 0 0 16px">{{ cvPipelineLine }}</p>
+                <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 10px">A sample of what the filter dropped</div>
+                <ul style="margin: 0; padding-left: 18px; font-size: 13px; display: flex; flex-direction: column; gap: 6px; opacity: 0.8">
+                  <sc-for list="{{ cvDropped }}" as="drop" hint-placeholder-count="4">
+                    <li>{{ drop.text }}</li>
+                  </sc-for>
+                </ul>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isBrands }}" hint-placeholder-val="{{ false }}">
+      <section style="padding-top: 64px">
+        <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Spotted</div>
+        <h1 style="font-size: clamp(38px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 18px">Gear, food and labels on screen.</h1>
+        <p style="max-width: 560px; opacity: 0.7; margin: 0 0 44px">Every brand the model read off a frame, with where it saw it and how sure it was.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px">
+          <sc-for list="{{ brandCards }}" as="brand" hint-placeholder-count="6">
+            <div style="background: var(--color-surface); border-radius: 30px; padding: 24px 26px; display: flex; flex-direction: column; gap: 14px">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+                <h3 style="font-size: 24px; margin: 0">{{ brand.name }}</h3>
+                <span style="{{ brand.confStyle }}">{{ brand.conf }}</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <sc-for list="{{ brand.sightings }}" as="sight" hint-placeholder-count="2">
+                  <div style="cursor: pointer; padding-left: 12px; border-left: 3px solid var(--color-accent-300)" onClick="{{ sight.open }}">
+                    <div style="font-size: 13px; margin-bottom: 3px">{{ sight.where }}</div>
+                    <div style="font-size: 11px; opacity: 0.5">{{ sight.handle }} · {{ sight.title }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isTips }}" hint-placeholder-val="{{ false }}">
+      <section style="padding-top: 64px">
+        <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Tips library</div>
+        <h1 style="font-size: clamp(38px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 18px">Every claim, pulled out.</h1>
+        <p style="max-width: 560px; opacity: 0.7; margin: 0 0 32px">Extracted from the reels, still attached to the source. Claims are what the creator said, not verified advice.</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px">
+          <sc-for list="{{ tipFilters }}" as="tfilter" hint-placeholder-count="4">
+            <button style="{{ tfilter.style }}" onClick="{{ tfilter.pick }}">{{ tfilter.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px">
+          <sc-for list="{{ tipCards }}" as="tip" hint-placeholder-count="8">
+            <div style="{{ tip.wrap }}" style-hover="transform: translateY(-3px)" onClick="{{ tip.open }}">
+              <p style="font-family: var(--font-heading); font-size: 18px; line-height: 1.25; margin: 0 0 16px">{{ tip.text }}</p>
+              <div style="display: flex; align-items: center; gap: 8px; margin-top: auto">
+                <span style="{{ tip.chipStyle }}">{{ tip.topic }}</span>
+                <span style="font-size: 11px; opacity: 0.5">{{ tip.handle }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+  </main>
+
+  <sc-if value="{{ reelOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 80; background: color-mix(in srgb, var(--color-neutral-900) 46%, transparent); display: flex; justify-content: center; overflow-y: auto; padding: 28px; animation: lensIn 0.2s ease" onClick="{{ closeReel }}">
+      <div style="width: min(940px, 100%); background: var(--color-bg); border-radius: 36px; box-shadow: var(--shadow-lg); height: fit-content; animation: lensUp 0.3s ease" onClick="{{ stop }}">
+        <div style="display: flex; gap: 10px; overflow-x: auto; padding: 18px 18px 6px">
+          <sc-for list="{{ rvFrames }}" as="frame" hint-placeholder-count="6">
+            <img src="{{ frame.src }}" alt="video frame" style="height: 260px; border-radius: 22px; flex: none; object-fit: cover; filter: saturate(0.75) contrast(0.92) brightness(1.04); transition: filter 0.3s ease" style-hover="filter: none" />
+          </sc-for>
+        </div>
+        <div style="padding: 22px 40px 44px">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px">
+            <div style="{{ rvMono }}">{{ rvInitials }}</div>
+            <span style="font-size: 13px; opacity: 0.65">{{ rvHandle }}</span>
+            <span style="{{ rvChip }}">{{ rvTopic }}</span>
+            <span style="font-size: 12px; opacity: 0.5">{{ rvDate }}</span>
+            <button class="btn btn-secondary" style="margin-left: auto" onClick="{{ closeReel }}">Close</button>
+          </div>
+          <h2 style="font-size: clamp(28px, 3.4vw, 40px); line-height: 1.06; letter-spacing: -0.02em; margin: 0 0 22px">{{ rvSummary }}</h2>
+          <div style="background: var(--color-accent-100); border-radius: 26px; padding: 20px 24px; margin-bottom: 28px">
+            <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 8px">Hook</div>
+            <div style="font-family: var(--font-heading); font-size: 20px; line-height: 1.25">{{ rvHook }}</div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px">
+            <sc-for list="{{ rvChips }}" as="rchip" hint-placeholder-count="5">
+              <span style="{{ rchip.style }}">{{ rchip.label }}</span>
+            </sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 14px; margin-bottom: 30px">
+            <sc-for list="{{ rvMeta }}" as="rmeta" hint-placeholder-count="5">
+              <div style="background: var(--color-surface); border-radius: 20px; padding: 14px 16px">
+                <div style="font-family: var(--font-heading); font-size: 18px">{{ rmeta.value }}</div>
+                <div style="font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; margin-top: 3px">{{ rmeta.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <h4 style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5; margin: 0 0 10px">What happens</h4>
+          <p style="font-size: 16px; line-height: 1.6; margin: 0 0 30px; max-width: 70ch">{{ rvDetail }}</p>
+          <h4 style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5; margin: 0 0 12px">What's claimed</h4>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px">
+            <sc-for list="{{ rvClaims }}" as="claim" hint-placeholder-count="4">
+              <div style="display: flex; gap: 12px; align-items: flex-start">
+                <div style="width: 22px; height: 22px; border-radius: 50%; background: var(--color-accent-2-200); color: var(--color-accent-2-800); font-size: 11px; display: grid; place-items: center; flex: none; margin-top: 2px">{{ claim.n }}</div>
+                <p style="margin: 0; font-size: 15px">{{ claim.text }}</p>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px">
+            <sc-for list="{{ rvShown }}" as="shown" hint-placeholder-count="3">
+              <div style="border: 1px solid var(--color-divider); border-radius: 26px; padding: 20px 22px">
+                <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 12px">{{ shown.label }}</div>
+                <ul style="margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 6px; font-size: 13px">
+                  <sc-for list="{{ shown.items }}" as="sitem" hint-placeholder-count="4">
+                    <li>{{ sitem.text }}</li>
+                  </sc-for>
+                </ul>
+              </div>
+            </sc-for>
+          </div>
+          <h4 style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5; margin: 0 0 12px">Caption as posted</h4>
+          <div style="background: var(--color-surface); border-radius: 26px; padding: 22px 24px; white-space: pre-wrap; font-size: 14px; line-height: 1.6; max-height: 300px; overflow-y: auto; margin-bottom: 30px">{{ rvCaption }}</div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px">
+            <a class="btn btn-primary" href="{{ rvUrl }}" target="_blank" rel="noreferrer">Watch on Instagram</a>
+            <button class="btn btn-secondary" onClick="{{ askAboutReel }}">Ask about this reel</button>
+            <sc-if value="{{ showEvidenceToggle }}" hint-placeholder-val="{{ true }}">
+              <button class="btn btn-ghost" onClick="{{ toggleRvAi }}">{{ rvAiLabel }}</button>
+            </sc-if>
+          </div>
+          <sc-if value="{{ rvAiOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top: 20px; background: var(--color-neutral-100); border-radius: 28px; padding: 24px 26px; animation: lensIn 0.3s ease">
+              <div style="font-size: 13px; opacity: 0.7; margin-bottom: 20px">{{ rvEngineLine }}</div>
+              <sc-for list="{{ rvAiGroups }}" as="aigroup" hint-placeholder-count="3">
+                <div style="margin-bottom: 20px">
+                  <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 8px">{{ aigroup.label }}</div>
+                  <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; opacity: 0.85">
+                    <sc-for list="{{ aigroup.items }}" as="aiitem" hint-placeholder-count="3">
+                      <li>{{ aiitem.text }}</li>
+                    </sc-for>
+                  </ul>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100%); z-index: 90; background: var(--color-surface); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; animation: lensSlide 0.28s ease">
+      <div style="padding: 22px 24px 16px; border-bottom: 1px solid var(--color-divider); display: flex; align-items: flex-start; gap: 12px">
+        <div style="margin-right: auto">
+          <div style="font-family: var(--font-heading); font-size: 20px; line-height: 1.1">{{ chatTitle }}</div>
+          <div style="font-size: 11px; opacity: 0.55; margin-top: 4px">{{ chatScopeLine }}</div>
+        </div>
+        <button class="btn btn-secondary" onClick="{{ closeChat }}">Close</button>
+      </div>
+      <div style="flex: 1; overflow-y: auto; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px">
+        <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="1">
+          <div style="{{ msg.wrap }}">
+            <div style="{{ msg.bubble }}">{{ msg.text }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ chatBusy }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size: 12px; opacity: 0.5">Reading the notes…</div>
+        </sc-if>
+      </div>
+      <div style="padding: 16px 24px 22px; border-top: 1px solid var(--color-divider)">
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px">
+          <sc-for list="{{ chatSuggestions }}" as="prompt" hint-placeholder-count="3">
+            <button class="btn btn-secondary" style="font-size: 12px; padding: 5px 12px" onClick="{{ prompt.ask }}">{{ prompt.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; gap: 8px">
+          <input class="input" placeholder="Ask anything about this content" value="{{ chatInput }}" onChange="{{ onChatInput }}" onKeyDown="{{ onChatKey }}" />
+          <button class="btn btn-primary" style="flex: none" onClick="{{ sendChat }}">Send</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#c67139&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#c67139&quot;,&quot;#d9483b&quot;,&quot;#2f6f5e&quot;,&quot;#3f5bd9&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;accent2&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#7a8a5e&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#7a8a5e&quot;,&quot;#c98a2b&quot;,&quot;#7a5ea8&quot;,&quot;#3f7f8a&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;bg&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f5ead8&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#f5ead8&quot;,&quot;#f7f4ee&quot;,&quot;#eef2ea&quot;,&quot;#f6efe4&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;feedLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;mixed&quot;,&quot;options&quot;:[&quot;mixed&quot;,&quot;uniform&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showEvidence&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const TOPIC_TONES = {
+  nutrition: { fill: 'var(--color-accent-2-500)', soft: 'var(--color-accent-2-200)', ink: 'var(--color-accent-2-800)' },
+  training:  { fill: 'var(--color-accent-500)',   soft: 'var(--color-accent-200)',   ink: 'var(--color-accent-800)' },
+  endurance: { fill: 'var(--color-accent-800)',   soft: 'var(--color-accent-300)',   ink: 'var(--color-accent-900)' },
+  recovery:  { fill: 'var(--color-accent-2-700)', soft: 'var(--color-accent-2-300)', ink: 'var(--color-accent-2-900)' },
+  gear:      { fill: 'var(--color-neutral-700)',  soft: 'var(--color-neutral-200)',  ink: 'var(--color-neutral-900)' }
+};
+const TOPIC_BLURB = {
+  nutrition: 'Recipes, macros, supplements and what actually ends up on the plate.',
+  training: 'Sessions, lifts, form work and the gear it takes.',
+  endurance: 'Runs, races and everything logged in kilometres.',
+  recovery: 'Rest, sleep, mobility and coming back from load.',
+  gear: 'Kit, wearables and what they train in.'
+};
+
+class Component extends DCLogic {
+  state = {
+    route: 'feed', reelId: null, topicKey: null, creatorKey: null,
+    filters: { creator: 'all', topic: 'all', format: 'all' },
+    tipTopic: 'all',
+    rvAiOpen: false, cvAiOpen: false,
+    chatOpen: false, chatScope: { kind: 'all' }, messages: [], chatInput: '', chatBusy: false,
+    ready: false
+  };
+
+  componentDidMount() {
+    this.applyTheme();
+    const tick = () => {
+      if (window.HUB) this.setState({ ready: true });
+      else setTimeout(tick, 60);
+    };
+    tick();
+  }
+  componentDidUpdate() { this.applyTheme(); }
+
+  applyTheme() {
+    const r = document.documentElement;
+    const accent = this.props.accent || '#c67139';
+    const accent2 = this.props.accent2 || '#7a8a5e';
+    const bg = this.props.bg || '#f5ead8';
+    const ramp = (name, base) => {
+      const steps = { 100: ['white', 10], 200: ['white', 22], 300: ['white', 40], 400: ['white', 68], 600: ['black', 82], 700: ['black', 64], 800: ['black', 46], 900: ['black', 30] };
+      r.style.setProperty('--color-' + name + '-500', base);
+      Object.keys(steps).forEach(k => {
+        const mixWith = steps[k][0], pct = steps[k][1];
+        r.style.setProperty('--color-' + name + '-' + k, 'color-mix(in oklab, ' + base + ' ' + pct + '%, ' + mixWith + ')');
+      });
+    };
+    r.style.setProperty('--color-accent', accent);
+    r.style.setProperty('--color-accent-2', accent2);
+    r.style.setProperty('--color-bg', bg);
+    r.style.setProperty('--color-surface', 'color-mix(in oklab, ' + bg + ' 88%, ' + accent + ')');
+    ramp('accent', accent);
+    ramp('accent-2', accent2);
+  }
+
+  get hub() { return (this.state.ready && window.HUB) || { creators: [], reels: [] }; }
+  creator(u) { return this.hub.creators.find(c => c.username === u) || { username: u, name: u, counts: {} }; }
+  initials(u) {
+    const c = this.creator(u);
+    return (c.name || u).split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  }
+  tone(t) { return TOPIC_TONES[t] || TOPIC_TONES.gear; }
+  num(n) {
+    if (n == null) return '—';
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(n >= 1e5 ? 0 : 1) + 'k';
+    return String(n);
+  }
+  dateShort(ts) { return new Date(ts).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); }
+  dur(s) { const m = Math.floor(s / 60), r = s % 60; return m ? m + 'm ' + r + 's' : r + 's'; }
+
+  chip(label, t, strong) {
+    const tn = this.tone(t);
+    return {
+      label: label,
+      style: 'display: inline-flex; align-items: center; font-size: 11px; padding: 3px 11px; border-radius: 999px; background: ' + (strong ? tn.fill : tn.soft) + '; color: ' + (strong ? 'var(--color-bg)' : tn.ink) + '; white-space: nowrap'
+    };
+  }
+  monoStyle(size, t) {
+    const tn = this.tone(t || 'training');
+    return 'width: ' + size + 'px; height: ' + size + 'px; border-radius: 50%; background: ' + tn.fill + '; color: var(--color-bg); font-family: var(--font-heading); font-size: ' + Math.round(size * 0.38) + 'px; display: grid; place-items: center; flex: none';
+  }
+  pill(active) {
+    return 'cursor: pointer; font-family: var(--font-body); font-size: 13px; padding: 6px 15px; border-radius: 999px; border: 1px solid ' + (active ? 'transparent' : 'var(--color-divider)') + '; background: ' + (active ? 'var(--color-accent-500)' : 'transparent') + '; color: ' + (active ? 'var(--color-bg)' : 'var(--color-text)') + '; transition: background 0.18s ease';
+  }
+
+  card(r, hero) {
+    const tn = this.tone(r.topic);
+    return {
+      id: r.id,
+      open: () => this.openReel(r.id),
+      wrap: 'grid-column: span ' + (hero ? 2 : 1) + '; display: flex; flex-direction: ' + (hero ? 'row' : 'column') + '; background: var(--color-surface); border-radius: 32px; overflow: hidden; cursor: pointer; transition: transform 0.28s ease, box-shadow 0.28s ease; box-shadow: var(--shadow-sm)',
+      media: 'position: relative; flex: none; ' + (hero ? 'width: 46%;' : 'width: 100%; height: 220px;') + ' overflow: hidden',
+      img: 'width: 100%; height: 100%; object-fit: cover; filter: saturate(0.74) contrast(0.92) brightness(1.05)',
+      badge: 'position: absolute; top: 14px; left: 14px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; background: ' + tn.fill + '; color: var(--color-bg)',
+      body: 'display: flex; flex-direction: column; flex: 1; padding: ' + (hero ? '30px 32px' : '20px 22px 22px'),
+      titleStyle: 'font-family: var(--font-heading); font-size: ' + (hero ? 28 : 19) + 'px; line-height: 1.14; margin: 0 0 10px; letter-spacing: -0.01em',
+      sumStyle: 'margin: 0; font-size: ' + (hero ? 15 : 13) + 'px; opacity: 0.72; line-height: 1.5',
+      mono: this.monoStyle(22, r.topic),
+      initials: this.initials(r.creator),
+      handle: '@' + r.creator,
+      date: this.dateShort(r.timestamp),
+      topic: r.topic,
+      thumb: r.thumb,
+      title: r.hook || r.summary,
+      summary: hero ? r.detail.slice(0, 220) + '…' : r.summary,
+      chips: (r.subTopics || []).slice(0, hero ? 4 : 2).map(s => this.chip(s, r.topic)),
+      views: this.num(r.views), likes: this.num(r.likes), length: this.dur(r.duration)
+    };
+  }
+
+  go(route) { this.setState({ route: route, reelId: null }); window.scrollTo({ top: 0 }); }
+  openReel(id) { this.setState({ reelId: id, rvAiOpen: false }); }
+
+  filtered() {
+    const f = this.state.filters;
+    return this.hub.reels.filter(r =>
+      (f.creator === 'all' || r.creator === f.creator) &&
+      (f.topic === 'all' || r.topic === f.topic) &&
+      (f.format === 'all' || r.format === f.format));
+  }
+
+  contextFor(scope) {
+    let reels = this.hub.reels;
+    if (scope.kind === 'creator') reels = reels.filter(r => r.creator === scope.value);
+    if (scope.kind === 'reel') reels = reels.filter(r => r.id === scope.value);
+    return reels.map(r => [
+      'REEL ' + r.id + ' — @' + r.creator + ' (' + this.creator(r.creator).name + '), posted ' + r.timestamp,
+      'Topic: ' + r.topic + '; sub-topics: ' + (r.subTopics || []).join(', ') + '; format: ' + r.format + '; setting: ' + r.setting,
+      'Summary: ' + r.summary,
+      'Detail: ' + r.detail,
+      'Hook: ' + r.hook,
+      'Claims: ' + (r.claims || []).join(' | '),
+      'Foods: ' + (r.foods || []).join(', '),
+      'Equipment: ' + (r.equipment || []).join(', '),
+      'Brands: ' + (r.brands || []).map(b => b.name).join(', '),
+      'Stats: ' + r.views + ' views, ' + r.likes + ' likes, ' + r.duration + 's',
+      'Caption: ' + (r.caption || '').slice(0, 900)
+    ].join('\n')).join('\n\n---\n\n');
+  }
+
+  async send(text) {
+    const q = (text || this.state.chatInput || '').trim();
+    if (!q || this.state.chatBusy) return;
+    const scope = this.state.chatScope;
+    this.setState(s => ({ messages: s.messages.concat([{ role: 'user', text: q }]), chatInput: '', chatBusy: true }));
+    const ctx = this.contextFor(scope);
+    try {
+      const reply = await window.claude.complete({
+        system: 'You answer questions about a small archive of analysed Instagram fitness reels. Use ONLY the notes provided. Be concise — 2-4 sentences or a short list. Name the creator and reel when relevant. If the notes do not cover it, say so plainly. These notes are machine-generated descriptions of video content, so hedge where the notes hedge.',
+        messages: [{ role: 'user', content: 'NOTES:\n\n' + ctx + '\n\nQUESTION: ' + q }]
+      });
+      this.setState(s => ({ messages: s.messages.concat([{ role: 'bot', text: reply }]), chatBusy: false }));
+    } catch (e) {
+      const why = String((e && e.message) || e || '');
+      const text = /\b401\b|\b403\b/.test(why)
+        ? 'The assistant is not configured — OPENAI_API_KEY is missing or rejected on the server. Add it in your Vercel project settings and redeploy.'
+        : 'Could not reach the assistant just now. ' + (why ? '(' + why + ')' : 'Please try again.');
+      this.setState(s => ({ messages: s.messages.concat([{ role: 'bot', text: text }]), chatBusy: false }));
+    }
+  }
+
+  openChat(scope, greeting) {
+    this.setState({ chatOpen: true, chatScope: scope, messages: [{ role: 'bot', text: greeting }] });
+  }
+
+  renderVals() {
+    const st = this.state;
+    const hub = this.hub;
+    const reels = hub.reels;
+    const showEvidence = this.props.showEvidence !== false;
+    const layoutMixed = (this.props.feedLayout || 'mixed') === 'mixed';
+    const uniq = (arr) => Array.from(new Set(arr));
+
+    const routes = [
+      ['feed', 'Feed'], ['brief', 'Daily brief'], ['topics', 'Topics'],
+      ['creators', 'Creators'], ['brands', 'Spotted'], ['tips', 'Tips']
+    ];
+    const activeGroup = { topic: 'topics', creator: 'creators' }[st.route] || st.route;
+
+    const vals = {
+      goFeed: () => this.go('feed'),
+      goTopics: () => this.go('topics'),
+      goCreators: () => this.go('creators'),
+      stop: (e) => e.stopPropagation(),
+      showEvidenceToggle: showEvidence,
+      navItems: routes.map(pair => ({
+        label: pair[1],
+        go: () => this.go(pair[0]),
+        style: 'cursor: pointer; border: none; background: ' + (activeGroup === pair[0] ? 'var(--color-accent-200)' : 'transparent') + '; color: ' + (activeGroup === pair[0] ? 'var(--color-accent-800)' : 'var(--color-text)') + '; font-family: var(--font-body); font-size: 14px; padding: 8px 14px; border-radius: 999px; transition: background 0.18s ease'
+      })),
+      isFeed: st.route === 'feed', isBrief: st.route === 'brief', isTopics: st.route === 'topics',
+      isTopic: st.route === 'topic', isCreators: st.route === 'creators', isCreator: st.route === 'creator',
+      isBrands: st.route === 'brands', isTips: st.route === 'tips'
+    };
+
+    const totScraped = hub.creators.reduce((a, c) => a + (c.counts.scraped || 0), 0);
+    const totKept = hub.creators.reduce((a, c) => a + (c.counts.kept || 0), 0);
+    vals.runStamp = hub.generatedAt ? 'Last run ' + hub.generatedAt.slice(0, 10) + ' · ' + hub.creators.map(c => '@' + c.username).join('  ') : 'Loading run…';
+    vals.heroLine = 'What they cooked, lifted and ran this month — written out, tagged and searchable. Nothing to watch unless you want to.';
+    const latest = reels[0];
+    if (latest) {
+      vals.latestThumb = latest.thumb;
+      vals.latestMeta = '@' + latest.creator + ' · ' + this.dateShort(latest.timestamp);
+      vals.latestHook = latest.hook || latest.summary;
+      vals.openLatest = () => this.openReel(latest.id);
+    } else {
+      vals.latestThumb = '';
+      vals.latestMeta = '';
+      vals.latestHook = 'Waiting for the first run.';
+      vals.openLatest = () => {};
+    }
+    const days = uniq(reels.map(r => r.timestamp.slice(0, 10))).length;
+    vals.briefTeaser = days ? 'Read the brief — ' + days + ' days, one line each →' : 'Read the daily brief →';
+    vals.goBrief = () => this.go('brief');
+
+    const mkOpts = (key, values) => [{ k: 'all', label: 'All' }].concat(values.map(v => ({ k: v, label: v }))).map(o => ({
+      label: o.label,
+      style: this.pill(st.filters[key] === o.k),
+      pick: () => this.setState(s => {
+        const next = Object.assign({}, s.filters);
+        next[key] = o.k;
+        return { filters: next };
+      })
+    }));
+    vals.filterGroups = [
+      { label: 'Creator', opts: mkOpts('creator', hub.creators.map(c => c.username)) },
+      { label: 'Topic', opts: mkOpts('topic', uniq(reels.map(r => r.topic))) },
+      { label: 'Format', opts: mkOpts('format', uniq(reels.map(r => r.format))) }
+    ];
+
+    const list = this.filtered();
+    const heroIds = layoutMixed ? list.slice().sort((a, b) => b.views - a.views).slice(0, 2).map(r => r.id) : [];
+    vals.feedCards = list.map(r => this.card(r, heroIds.indexOf(r.id) >= 0));
+    vals.feedEmpty = list.length === 0;
+
+    const byDay = {};
+    reels.forEach(r => {
+      const k = r.timestamp.slice(0, 10);
+      byDay[k] = (byDay[k] || []).concat([r]);
+    });
+    vals.briefDays = Object.keys(byDay).sort().reverse().map(k => {
+      const d = new Date(k);
+      const entries = byDay[k];
+      return {
+        day: String(d.getDate()),
+        month: d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }).toUpperCase(),
+        countLabel: entries.length === 1 ? '1 post' : entries.length + ' posts',
+        entries: entries.map(r => ({
+          open: () => this.openReel(r.id),
+          thumb: r.thumb, summary: r.summary, topic: r.topic,
+          takeaway: (r.claims && r.claims[0]) || r.bucketReason,
+          initials: this.initials(r.creator), handle: '@' + r.creator,
+          mono: this.monoStyle(20, r.topic),
+          chipStyle: this.chip(r.topic, r.topic).style
+        }))
+      };
+    });
+
+    const topics = uniq(reels.map(r => r.topic));
+    vals.topicCards = topics.map(t => {
+      const rs = reels.filter(r => r.topic === t);
+      const tn = this.tone(t);
+      return {
+        name: t, count: String(rs.length),
+        blurb: TOPIC_BLURB[t] || (rs.length + ' reels tagged ' + t + ' by the pipeline.'),
+        open: () => this.setState({ route: 'topic', topicKey: t }),
+        wrap: 'background: ' + tn.soft + '; color: ' + tn.ink + '; border-radius: 34px; padding: 30px; cursor: pointer; transition: transform 0.25s ease',
+        dot: 'width: 46px; height: 46px; border-radius: 50%; background: ' + tn.fill + '; color: var(--color-bg); font-family: var(--font-heading); font-size: 18px; display: grid; place-items: center; flex: none',
+        subs: uniq(rs.reduce((a, r) => a.concat(r.subTopics), [])).slice(0, 6).map(s => this.chip(s, t, true))
+      };
+    });
+
+    if (st.route === 'topic') {
+      const t = st.topicKey, tn = this.tone(t);
+      const rs = reels.filter(r => r.topic === t);
+      const flat = (key) => uniq(rs.reduce((a, r) => a.concat(r[key] || []), []));
+      vals.topicName = t;
+      vals.topicBlurb = TOPIC_BLURB[t] || '';
+      vals.topicHero = 'background: ' + tn.soft + '; color: ' + tn.ink + '; border-radius: 36px; padding: 40px 44px';
+      vals.topicGroups = [
+        { label: 'What they claim', items: flat('claims').slice(0, 8) },
+        { label: 'Food & supplements', items: flat('foods') },
+        { label: 'Equipment seen', items: flat('equipment') },
+        { label: 'Sub-topics', items: flat('subTopics') }
+      ].filter(g => g.items.length).map(g => ({ label: g.label, items: g.items.map(text => ({ text: text })) }));
+      vals.topicReels = rs.map(r => this.card(r, false));
+    }
+
+    const mixFor = (u) => {
+      const rs = reels.filter(r => r.creator === u);
+      return uniq(rs.map(r => r.topic)).map(t => {
+        const n = rs.filter(r => r.topic === t).length;
+        const tn = this.tone(t);
+        return {
+          label: t + ' · ' + n,
+          style: 'flex: ' + n + '; background: ' + tn.fill,
+          chip: this.chip(t + ' · ' + n, t).style
+        };
+      });
+    };
+    vals.creatorCards = hub.creators.map(c => {
+      const rs = reels.filter(r => r.creator === c.username);
+      return {
+        name: c.name, handle: '@' + c.username, initials: this.initials(c.username),
+        mono: this.monoStyle(56, rs[0] && rs[0].topic),
+        mix: mixFor(c.username),
+        blurb: c.counts.kept + ' of ' + c.counts.scraped + ' recent posts were on topic — mostly ' + (c.counts.kept_fitness > c.counts.kept_nutrition ? 'training and endurance' : 'food and nutrition') + '.',
+        stats: [
+          { value: this.num(c.counts.scraped), label: 'scraped' },
+          { value: this.num(c.counts.kept), label: 'on topic' },
+          { value: this.num(c.counts.analysed), label: 'analysed' }
+        ],
+        open: () => this.setState({ route: 'creator', creatorKey: c.username, cvAiOpen: false })
+      };
+    });
+
+    if (st.route === 'creator') {
+      const u = st.creatorKey, c = this.creator(u);
+      const rs = reels.filter(r => r.creator === u);
+      const flat = (key) => uniq(rs.reduce((a, r) => a.concat(r[key] || []), []));
+      const brandNames = uniq(rs.reduce((a, r) => a.concat((r.brands || []).map(b => b.name)), []));
+      vals.cvName = c.name;
+      vals.cvHandle = '@' + u;
+      vals.cvInitials = this.initials(u);
+      vals.cvMono = this.monoStyle(76, rs[0] && rs[0].topic);
+      vals.cvAskLabel = 'Ask about ' + c.name.split(' ')[0];
+      vals.cvBlurb = 'Across ' + rs.length + ' analysed reels: ' + flat('subTopics').slice(0, 5).join(', ') + '. Tone reads ' + flat('tone').slice(0, 3).join(', ') + '.';
+      vals.cvStats = [
+        { value: this.num(c.counts.scraped), label: 'posts scraped' },
+        { value: this.num(c.counts.kept), label: 'on topic' },
+        { value: this.num(rs.reduce((a, r) => a + r.views, 0)), label: 'views analysed' },
+        { value: this.num(brandNames.length), label: 'brands spotted' }
+      ];
+      vals.cvGroups = [
+        { label: 'Topic mix', items: mixFor(u).map(m => ({ text: m.label, style: m.chip })) },
+        { label: 'Brands they show', items: brandNames.map(t => ({ text: t, style: this.chip(t, 'gear').style })) },
+        { label: 'Recurring sub-topics', items: flat('subTopics').map(t => ({ text: t, style: this.chip(t, rs.length ? rs[0].topic : 'gear').style })) },
+        { label: 'Formats', items: uniq(rs.map(r => r.format)).map(t => ({ text: t, style: this.chip(t, 'gear').style })) }
+      ].filter(g => g.items.length);
+      vals.cvReels = rs.map(r => this.card(r, false));
+      vals.cvAiOpen = st.cvAiOpen;
+      vals.cvAiLabel = st.cvAiOpen ? 'Hide how this was read' : 'How this was read';
+      vals.toggleCvAi = () => this.setState(s => ({ cvAiOpen: !s.cvAiOpen }));
+      vals.cvPipelineLine = c.counts.scraped + ' recent posts were scraped and screened on caption plus thumbnail by ' + c.engine + '. ' + c.counts.kept + ' passed the ' + (c.buckets || []).join(' / ') + ' filter at confidence ≥ 0.6; ' + (c.mode === 'backfill-all' ? 'every one of them was' : 'the top ' + c.counts.analysed + ' were') + ' watched frame by frame.';
+      vals.cvDropped = (c.droppedSample || []).map(d => ({ text: d.shortcode + ' — ' + d.reason + ' (confidence ' + d.confidence + ')' }));
+      vals.openCreatorChat = () => this.openChat({ kind: 'creator', value: u }, 'Ask me anything about ' + c.name + "'s " + rs.length + ' analysed reels — recipes, sessions, brands, claims.');
+    }
+
+    const brandMap = {};
+    reels.forEach(r => (r.brands || []).forEach(b => {
+      const e = brandMap[b.name] = brandMap[b.name] || { name: b.name, conf: 0, sightings: [] };
+      e.conf = Math.max(e.conf, b.confidence);
+      e.sightings.push({ where: b.where, handle: '@' + r.creator, title: r.hook || r.summary, open: () => this.openReel(r.id) });
+    }));
+    vals.brandCards = Object.keys(brandMap).map(k => brandMap[k]).sort((a, b) => b.sightings.length - a.sightings.length).map(b => ({
+      name: b.name,
+      conf: Math.round(b.conf * 100) + '% sure',
+      confStyle: this.chip('', 'gear').style,
+      sightings: b.sightings
+    }));
+
+    vals.tipFilters = ['all'].concat(topics).map(t => ({
+      label: t === 'all' ? 'All topics' : t,
+      style: this.pill(st.tipTopic === t),
+      pick: () => this.setState({ tipTopic: t })
+    }));
+    vals.tipCards = reels
+      .filter(r => st.tipTopic === 'all' || r.topic === st.tipTopic)
+      .reduce((acc, r) => acc.concat((r.claims || []).map(text => {
+        const tn = this.tone(r.topic);
+        return {
+          text: text, topic: r.topic, handle: '@' + r.creator,
+          chipStyle: this.chip(r.topic, r.topic).style,
+          wrap: 'display: flex; flex-direction: column; background: var(--color-bg); border: 1px solid ' + tn.soft + '; border-left: 6px solid ' + tn.fill + '; border-radius: 26px; padding: 24px 26px; cursor: pointer; transition: transform 0.22s ease',
+          open: () => this.openReel(r.id)
+        };
+      })), []);
+
+    const r = reels.filter(x => x.id === st.reelId)[0];
+    vals.reelOpen = !!r;
+    vals.closeReel = () => this.setState({ reelId: null });
+    if (r) {
+      vals.rvFrames = r.frames.map(src => ({ src: src }));
+      vals.rvMono = this.monoStyle(26, r.topic);
+      vals.rvInitials = this.initials(r.creator);
+      vals.rvHandle = '@' + r.creator;
+      vals.rvChip = this.chip(r.topic, r.topic, true).style;
+      vals.rvTopic = r.topic;
+      vals.rvDate = new Date(r.timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      vals.rvSummary = r.summary;
+      vals.rvHook = r.hook || '—';
+      vals.rvChips = (r.subTopics || []).map(s => this.chip(s, r.topic))
+        .concat([this.chip(r.format, 'gear'), this.chip(r.setting.split('—')[0].trim(), 'gear')])
+        .concat((r.tone || []).map(t => this.chip(t, 'gear')));
+      vals.rvMeta = [
+        { value: this.num(r.views), label: 'views' },
+        { value: this.num(r.likes), label: 'likes' },
+        { value: this.num(r.comments), label: 'comments' },
+        { value: this.dur(r.duration), label: 'length' },
+        { value: String(r.framesUsed), label: 'frames read' }
+      ];
+      vals.rvDetail = r.detail;
+      vals.rvClaims = (r.claims || []).map((text, i) => ({ n: String(i + 1), text: text }));
+      vals.rvShown = [
+        { label: 'Exercises', items: r.exercises },
+        { label: 'Food & supplements', items: r.foods },
+        { label: 'Equipment', items: r.equipment },
+        { label: 'Brands on screen', items: (r.brands || []).map(b => b.name) },
+        { label: 'On-screen text', items: (r.graphics || []).slice(0, 8) }
+      ].filter(g => g.items && g.items.length).map(g => ({ label: g.label, items: g.items.map(text => ({ text: text })) }));
+      vals.rvCaption = r.caption;
+      vals.rvUrl = r.url;
+      vals.rvAiOpen = st.rvAiOpen;
+      vals.rvAiLabel = st.rvAiOpen ? 'Hide the evidence' : 'How the model read this';
+      vals.toggleRvAi = () => this.setState(s => ({ rvAiOpen: !s.rvAiOpen }));
+      vals.rvEngineLine = 'Read from ' + r.framesUsed + ' frames by ' + r.engine + '. Spoken language detected: ' + r.language + '. Bucketed as ' + r.bucket + ' — ' + r.bucketReason;
+      vals.rvAiGroups = [
+        { label: 'Why it was shortlisted', items: r.shortlist ? [r.shortlist.reason + ' (' + r.shortlist.signal + ', confidence ' + r.shortlist.confidence + ')'] : [] },
+        { label: 'Evidence from frames', items: r.evidence.from_frames || [] },
+        { label: 'Evidence from audio', items: (r.evidence.from_audio || []).length ? r.evidence.from_audio : ['No usable speech in this reel.'] },
+        { label: 'Where the model is unsure', items: r.uncertainties || [] },
+        { label: 'Raw speech-to-text (pipeline marked it unreliable)', items: r.transcript ? [r.transcript] : [] }
+      ].filter(g => g.items.length).map(g => ({ label: g.label, items: g.items.map(text => ({ text: text })) }));
+      vals.askAboutReel = () => this.openChat({ kind: 'reel', value: r.id }, 'Ask about this reel: "' + r.summary + '"');
+    }
+
+    const scope = st.chatScope;
+    vals.chatOpen = st.chatOpen;
+    vals.chatTitle = scope.kind === 'creator' ? 'Ask about ' + this.creator(scope.value).name
+      : scope.kind === 'reel' ? 'Ask about this reel' : 'Ask the archive';
+    vals.chatScopeLine = scope.kind === 'creator' ? "Grounded in @" + scope.value + "'s analysed reels"
+      : scope.kind === 'reel' ? 'Grounded in one reel' : 'Grounded in all ' + reels.length + ' analysed reels';
+    vals.chatMessages = st.messages.map(m => ({
+      text: m.text,
+      wrap: 'display: flex; justify-content: ' + (m.role === 'user' ? 'flex-end' : 'flex-start'),
+      bubble: 'max-width: 86%; font-size: 14px; line-height: 1.5; padding: 12px 16px; border-radius: 22px; white-space: pre-wrap; background: ' + (m.role === 'user' ? 'var(--color-accent-500)' : 'var(--color-bg)') + '; color: ' + (m.role === 'user' ? 'var(--color-bg)' : 'var(--color-text)')
+    }));
+    vals.chatBusy = st.chatBusy;
+    vals.chatInput = st.chatInput;
+    const sugg = scope.kind === 'creator'
+      ? ['What does she cook most?', 'Which brands show up?', 'Summarise her training']
+      : scope.kind === 'reel'
+        ? ['Give me the recipe', 'What did she claim?', 'Is anything unclear?']
+        : ['What changed this week?', 'Any high-protein recipes?', 'Which gear keeps appearing?'];
+    vals.chatSuggestions = sugg.map(label => ({ label: label, ask: () => this.send(label) }));
+    vals.onChatInput = (e) => this.setState({ chatInput: e.target.value });
+    vals.onChatKey = (e) => { if (e.key === 'Enter') this.send(); };
+    vals.sendChat = () => this.send();
+    vals.closeChat = () => this.setState({ chatOpen: false });
+    vals.openGlobalChat = () => this.openChat({ kind: 'all' }, 'I have notes on ' + reels.length + ' reels from ' + hub.creators.length + ' creators. Ask about recipes, sessions, brands or what someone has been posting.');
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
