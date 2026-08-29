@@ -243,8 +243,17 @@ def main() -> int:
             if built:
                 mine.append(built)
 
-        # Keep the page's own arithmetic honest even on older run.json files.
-        counts.setdefault("kept", counts.get("analysed", len(mine)))
+        # The page reads counts.kept as "how many of the scraped posts were
+        # actually on topic". Older run.json files spend that number under
+        # "fitness" and use "kept" for something else, which made one creator
+        # read as 3-of-40 when 30 posts had survived the filter. Derive it from
+        # the two counts every version agrees on instead: whatever was scraped
+        # and not dropped at the screening step is the shortlist.
+        scraped, dropped = counts.get("scraped"), counts.get("dropped")
+        if isinstance(scraped, int) and isinstance(dropped, int):
+            counts["kept"] = scraped - dropped
+        else:
+            counts.setdefault("kept", counts.get("analysed", len(mine)))
         counts["analysed"] = counts.get("analysed", len(mine))
         counts["published"] = len(mine)
 
