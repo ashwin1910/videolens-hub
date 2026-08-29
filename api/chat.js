@@ -86,6 +86,9 @@ export default async function handler(req, res) {
         max_tokens: 600,
         messages: [{ role: "system", content: SYSTEM }, ...messages],
       }),
+      // The function itself is capped at 30s (vercel.json), so give up first and
+      // return a clear message rather than being killed mid-flight.
+      signal: AbortSignal.timeout(25000),
     });
 
     if (!upstream.ok) {
@@ -111,6 +114,14 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply, model: MODEL });
   } catch (err) {
     console.error("chat handler failed", err);
+    // A timeout or a failed connection is worth naming: it tells you the
+    // deployment is fine and the network or OpenAI is not.
+    if (err?.name === "TimeoutError" || err?.name === "AbortError") {
+      return res.status(504).json({ error: "OpenAI did not respond in time." });
+    }
+    if (err?.name === "TypeError") {
+      return res.status(502).json({ error: "Could not reach OpenAI from the server." });
+    }
     return res.status(500).json({ error: "The assistant failed unexpectedly." });
   }
 }
