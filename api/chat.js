@@ -60,11 +60,17 @@ export default async function handler(req, res) {
   // Normalise, drop anything malformed, and bound the total size.
   const messages = [];
   let budget = MAX_CHARS;
+  let truncated = false;
+  const totalIncoming = incoming.reduce(
+    (n, m) => n + (typeof m?.content === "string" ? m.content.length : 0),
+    0,
+  );
   for (const m of incoming) {
     const role = m?.role === "assistant" ? "assistant" : "user";
     const content = typeof m?.content === "string" ? m.content : String(m?.content ?? "");
     if (!content.trim()) continue;
     const clipped = content.slice(0, budget);
+    if (clipped.length < content.length) truncated = true;
     budget -= clipped.length;
     messages.push({ role, content: clipped });
     if (budget <= 0) break;
@@ -72,6 +78,10 @@ export default async function handler(req, res) {
   if (messages.length === 0) {
     return res.status(400).json({ error: "No usable message content." });
   }
+
+  const systemNote = truncated
+    ? "Note: the archive notes were truncated to fit the context limit. Say so if your answer may be incomplete."
+    : "";
 
   try {
     const upstream = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -84,7 +94,7 @@ export default async function handler(req, res) {
         model: MODEL,
         temperature: 0.2,
         max_tokens: 600,
-        messages: [{ role: "system", content: SYSTEM }, ...messages],
+        messages: [{ role: "system", content: [SYSTEM, systemNote].filter(Boolean).join(" ") }, ...messages],
       }),
       // The function itself is capped at 30s (vercel.json), so give up first and
       // return a clear message rather than being killed mid-flight.

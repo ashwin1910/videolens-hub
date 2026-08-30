@@ -810,96 +810,10 @@ def render_transcript(segments: list[dict]) -> str:
 
 
 # ---------------------------------------------------------------------------
-# STAGE 6 — Seedance vision reasoning
+# STAGE 6 — vision reasoning + reader compose
 # ---------------------------------------------------------------------------
 
-REASON_SYSTEM = """You are a video-understanding engine analysing a single short-form \
-Instagram Reel by an Indian fitness creator. You receive N still frames sampled evenly \
-in chronological order across the whole reel, plus a timestamped transcript of the audio \
-(often Hinglish — Hindi in Latin script — sometimes empty).
-
-Your job: read the video and return ONE strict JSON object. No prose, no markdown, no \
-code fences. Just the JSON.
-
-RULES
-- Ground every field in what you actually SEE in the frames or READ in the transcript. \
-  If you cannot tell, use null or an empty list — never guess a brand, a number or a claim.
-- Frames are stills, so infer motion carefully and say so in `uncertainties` when you do.
-- NEVER attribute something to audio that came from the frames, or vice versa. Each item \
-  in `evidence.from_frames` must name what is visible and roughly where; each item in \
-  `evidence.from_audio` must correspond to a line that is actually in the transcript.
-- If the transcript is empty, or says no reliable speech was detected, then this reel has \
-  NO usable audio. In that case: `evidence.from_audio` MUST be an empty list, \
-  `notable_quotes` MUST be empty, `spoken_language` MUST be "none", and you must not make \
-  any claim that depends on someone having said something. Silent music-over-visuals reels \
-  are completely normal — say so rather than inventing narration.
-- If the transcript contains "⟲ ×N (repeat loop collapsed)", that stretch was SILENCE. \
-  Do not treat the phrase as repeated; rely on the frames there.
-- Translate Hinglish into English for the summary and claims. In `notable_quotes` keep the \
-  creator's own wording but always write it in LATIN script (transliterate Devanagari), so \
-  quotes are comparable across reels.
-
-TWO THINGS THE PREVIOUS VERSION OF YOU GOT WRONG — do not repeat them:
-
-(a) ON-SCREEN TEXT. This creator burns auto-caption SUBTITLES into every frame. Those are
-    just the spoken words rendered as text — they are NOT information, and listing them
-    duplicates the transcript. Separate the two:
-      `graphics_text`  = deliberate design elements: title cards, hooks, day/step labels,
-                         numbers, pace and distance stats, brand wordmarks, end cards.
-                         THIS is the valuable field.
-      `subtitle_text`  = the running caption track. Give at most 3 representative lines
-                         and nothing more. Leave it empty if the reel has no subtitles.
-
-(b) BRANDS. Before answering, deliberately sweep every frame for: logos on gym walls,
-    banners and flooring; apparel and shoe logos; the watch or fitness tracker on the
-    wrist; equipment makers stamped on plates, racks, rowers and bikes; food, drink and
-    supplement packaging; and brand wordmarks in the on-screen graphics themselves (an
-    IRONMAN or HYROX title card IS a visible brand). Report every one you can actually
-    read, with lower confidence for partial or blurred marks. If after that sweep you
-    truly see none, return an empty list AND add "no legible brand marks in any frame"
-    to `uncertainties` — an empty list must be a decision, not an oversight.
-
-RETURN EXACTLY THIS SHAPE:
-{
-  "one_line_summary": "<what this reel is, in one sentence>",
-  "detailed_summary": "<3-5 sentences: what happens, what is argued, how it ends>",
-  "bucket": "<fitness|nutrition|drop>",
-  "bucket_reason": "<one sentence. 'fitness' = the subject is training or the body's performance. 'nutrition' = the subject is what goes into the body. 'drop' = anything else, including comedy, memes, relationship or motivational posts, event attendance with no performance, travel, gear hauls and promos — even when filmed in a gym.>",
-  "primary_topic": "<training|endurance|recovery|body_composition|fitness_science|nutrition|other>",
-  "sub_topics": ["<specific, e.g. 'progressive overload', 'protein timing'>"],
-  "hook": "<the opening line or visual that grabs attention, as seen/heard>",
-  "content_format": "<talking_head|exercise_demo|tutorial|voiceover_broll|listicle|myth_bust|transformation|vlog|other>",
-  "setting": "<gym|home|outdoor|kitchen|studio|street|other> — plus a short description",
-  "people_on_screen": {
-    "creator_present": <true|false>,
-    "max_in_any_frame": <integer — the most people you can count in a single frame, including bystanders in the background>,
-    "note": "<e.g. 'solo, busy commercial gym with other members behind' or null>"
-  },
-  "exercises_shown": ["<name each exercise or movement you can identify>"],
-  "food_or_supplements_shown": ["<foods, drinks, powders, packaging you can identify>"],
-  "equipment_visible": ["<barbell, dumbbell, cable machine, rower, treadmill, etc.>"],
-  "brands_or_products_visible": [
-    {"name": "<brand>", "where": "<which frame / what surface>", "confidence": <0.0-1.0>}
-  ],
-  "graphics_text": ["<deliberate on-screen graphics, verbatim — title cards, labels, stats>"],
-  "subtitle_text": ["<up to 3 representative burned-in subtitle lines, or empty>"],
-  "key_claims": ["<each factual or advice claim the creator makes>"],
-  "call_to_action": "<what the viewer is asked to do, or null>",
-  "target_audience": "<who this is for, e.g. 'beginner lifters', 'people cutting'>",
-  "tone": ["<educational|humorous|motivational|confrontational|calm|hype>"],
-  "spoken_language": "<hindi|english|hinglish|none>",
-  "content_quality": {
-    "production": "<one line on framing, lighting, editing>",
-    "information_density": "<low|medium|high> — one line why",
-    "watchability": "<one line on pacing and hook strength>"
-  },
-  "notable_quotes": ["<short verbatim lines from the transcript, Latin script, or empty if no speech>"],
-  "evidence": {
-    "from_frames": ["<what specifically in the frames supports the above>"],
-    "from_audio": ["<lines actually present in the transcript — empty if there was no speech>"]
-  },
-  "uncertainties": ["<anything you could not determine and why>"]
-}"""
+from reader_layer import REASON_SYSTEM, COMPOSE_SYSTEM, validate_pass1  # noqa: E402
 
 
 NO_SPEECH_NOTICE = (
@@ -924,7 +838,7 @@ def build_reason_messages(meta: dict, frames: list[Path], transcript_md: str) ->
         f"Posted: {meta.get('timestamp')}\n"
         f"Views: {meta.get('videoPlayCount') or meta.get('videoViewCount')}  "
         f"Likes: {meta.get('likesCount')}  Comments: {meta.get('commentsCount')}\n\n"
-        f"CAPTION (author's own words):\n{caption[:1500] or '(none)'}\n\n"
+        f"CAPTION (author's own words):\n{caption[:4000] or '(none)'}\n\n"
         f"HASHTAGS: {', '.join(meta.get('hashtags') or []) or '(none)'}\n\n"
         f"FRAMES: {len(frames)} stills sampled evenly across the reel, chronological order.\n\n"
         "AUDIO TRANSCRIPT (timestamped; low-confidence segments already deleted):\n"
@@ -945,6 +859,20 @@ def build_reason_messages(meta: dict, frames: list[Path], transcript_md: str) ->
         {"role": "system", "content": REASON_SYSTEM},
         {"role": "user", "content": content},
     ]
+
+
+def build_compose_messages(analysis: dict, meta: dict, transcript_md: str) -> list[dict]:
+    trimmed = {k: v for k, v in analysis.items() if not str(k).startswith("_")}
+    caption = (meta.get("caption") or "")[:4000]
+    user = (
+        f"## Vision analysis\n```json\n"
+        f"{json.dumps(trimmed, ensure_ascii=False, indent=1)}\n```\n\n"
+        f"## Full caption as posted\n{caption or '(no caption)'}\n\n"
+        f"## Trusted transcript\n"
+        f"{transcript_md or '(no reliable speech — read from frames and caption only)'}\n"
+    )
+    return [{"role": "system", "content": COMPOSE_SYSTEM},
+            {"role": "user", "content": user}]
 
 
 def seedance_reason(meta: dict, frames: list[Path], transcript_md: str) -> str:
@@ -1237,15 +1165,34 @@ def process_reel(meta: dict, cls: dict, reel_dir: Path, args) -> dict:
               else "OpenAI " + OPENAI_VISION_MODELS[0])
     if reasoning_json.exists() and not args.force_reason:
         info("reusing cached reasoning")
-        data = json.loads(reasoning_json.read_text())
+        data = validate_pass1(json.loads(reasoning_json.read_text()))
     else:
         info(f"sending {len(frames)} frames + transcript to {engine}…")
         t0 = time.time()
         raw = reason_about_video(args.vision, meta, frames, transcript_md)
-        data = parse_json_blob(raw)
+        data = validate_pass1(parse_json_blob(raw))
         data["_engine"] = engine
         reasoning_json.write_text(json.dumps(data, ensure_ascii=False, indent=2))
         ok(f"{engine} replied in {time.time() - t0:.0f}s")
+
+    # --- 6b. compose the reader layer -------------------------------------
+    reader_json = reel_dir / "reader.json"
+    if reader_json.exists() and not args.force_compose:
+        info("reusing cached reader layer")
+        reader = json.loads(reader_json.read_text())
+    elif data.get("_parse_failed"):
+        reader = {}
+    else:
+        info("composing the reader layer…")
+        raw2 = openai_chat(
+            build_compose_messages(data, meta, transcript_md),
+            json_mode=True, max_tokens=3000, temperature=0.3,
+            models=OPENAI_TEXT_MODELS,
+        )
+        reader = parse_json_blob(raw2)
+        reader_json.write_text(json.dumps(reader, ensure_ascii=False, indent=2))
+        ok("reader layer composed")
+    result["reader"] = reader
 
     md = render_reel_md(meta, cls, data, transcript_md, len(frames))
     reasoning_md.write_text(md, encoding="utf-8")
@@ -1607,7 +1554,9 @@ def main() -> int:
     ap.add_argument("--force-classify", action="store_true", help="Re-run caption classification")
     ap.add_argument("--force-frames", action="store_true", help="Re-extract frames and audio")
     ap.add_argument("--force-transcribe", action="store_true", help="Re-run Whisper")
-    ap.add_argument("--force-reason", action="store_true", help="Re-run Seedance")
+    ap.add_argument("--force-reason", action="store_true", help="Re-run vision reasoning")
+    ap.add_argument("--force-compose", action="store_true",
+                    help="re-run pass 2 only, against cached pass-1 output")
     ap.add_argument("--check", action="store_true", help="Verify setup and exit — spends nothing")
     args = ap.parse_args()
 
