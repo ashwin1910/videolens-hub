@@ -115,16 +115,57 @@
           <div style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5">field notes</div>
         </div>
       </div>
-      <nav class="lens-header-nav" style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap">
-        <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="6">
-          <button style="{{ nav.style }}" onClick="{{ nav.go }}">{{ nav.label }}</button>
-        </sc-for>
-      </nav>
+      <sc-if value="{{ showApp }}" hint-placeholder-val="{{ true }}">
+        <nav class="lens-header-nav" style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap">
+          <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="6">
+            <button style="{{ nav.style }}" onClick="{{ nav.go }}">{{ nav.label }}</button>
+          </sc-for>
+        </nav>
+        <button class="btn btn-primary lens-header-cta" style="flex: none" onClick="{{ openGlobalChat }}">Ask the archive</button>
+      </sc-if>
       <button class="btn btn-secondary lens-header-cta" style="flex: none; font-size: 13px" onClick="{{ signOut }}">Sign out</button>
-      <button class="btn btn-primary lens-header-cta" style="flex: none" onClick="{{ openGlobalChat }}">Ask the archive</button>
     </div>
   </header>
 
+  <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ true }}">
+    <main class="lens-main" style="max-width: 640px; margin: 0 auto; padding: 72px 28px">
+      <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Get started</div>
+      <h1 style="font-size: clamp(38px, 5vw, 56px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 16px">Pick your first creator.</h1>
+      <p style="font-size: 16px; opacity: 0.75; margin: 0 0 28px; line-height: 1.5">Paste an Instagram profile URL. You can follow up to 4 fitness and nutrition creators.</p>
+      <div style="background: var(--color-surface); border-radius: 32px; padding: 28px; box-shadow: var(--shadow-sm)">
+        <label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.65">
+          Instagram URL or @handle
+          <input class="input" placeholder="https://instagram.com/fit.khurana" value="{{ pickerInput }}" onChange="{{ onPickerInput }}" onKeyDown="{{ onPickerKey }}" />
+        </label>
+        <sc-if value="{{ pickerParsed }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size: 13px; margin-top: 12px; opacity: 0.7">Resolved handle: <strong>@{{ pickerParsed }}</strong></div>
+        </sc-if>
+        <sc-if value="{{ pickerError }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size: 13px; color: #9b3d2e; margin-top: 14px; background: color-mix(in srgb, #9b3d2e 10%, transparent); border-radius: 14px; padding: 10px 14px">{{ pickerError }}</div>
+        </sc-if>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 20px" onClick="{{ submitPicker }}">{{ pickerSubmitLabel }}</button>
+        <div style="font-size: 12px; opacity: 0.5; margin-top: 14px; text-align: center">{{ pickerSlotsLabel }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ showWaiting }}" hint-placeholder-val="{{ true }}">
+    <main class="lens-main" style="max-width: 640px; margin: 0 auto; padding: 72px 28px">
+      <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Setting up</div>
+      <h1 style="font-size: clamp(34px, 4.6vw, 52px); line-height: 1; letter-spacing: -0.03em; margin: 0 0 16px">{{ waitTitle }}</h1>
+      <p style="font-size: 16px; opacity: 0.75; margin: 0 0 12px; line-height: 1.5">{{ waitLine }}</p>
+      <sc-if value="{{ waitError }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size: 13px; color: #9b3d2e; margin: 18px 0; background: color-mix(in srgb, #9b3d2e 10%, transparent); border-radius: 14px; padding: 12px 14px">{{ waitError }}</div>
+        <button class="btn btn-secondary" onClick="{{ dismissFailedJob }}">Try a different creator</button>
+      </sc-if>
+      <sc-if value="{{ waitHasFeed }}" hint-placeholder-val="{{ false }}">
+        <p style="font-size: 14px; opacity: 0.65; margin-top: 24px">Reels are landing in your feed as they finish processing.</p>
+        <button class="btn btn-ghost" style="margin-top: 12px" onClick="{{ viewFeed }}">View feed →</button>
+      </sc-if>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ showApp }}" hint-placeholder-val="{{ true }}">
   <main class="lens-main" style="max-width: 1240px; margin: 0 auto; padding: 0 28px">
 
     <sc-if value="{{ isFeed }}" hint-placeholder-val="{{ true }}">
@@ -321,16 +362,35 @@
     <sc-if value="{{ isCreators }}" hint-placeholder-val="{{ false }}">
       <section style="padding-top: 64px">
         <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 14px">Creators</div>
-        <h1 style="font-size: clamp(38px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 44px">Who you're following.</h1>
+        <h1 style="font-size: clamp(38px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 20px">Who you're following.</h1>
+        <p style="font-size: 14px; opacity: 0.65; margin: 0 0 28px">{{ pickerSlotsLabel }}</p>
+        <sc-if value="{{ canAddCreator }}" hint-placeholder-val="{{ false }}">
+          <div style="background: var(--color-surface); border-radius: 28px; padding: 22px 24px; margin-bottom: 28px; box-shadow: var(--shadow-sm)">
+            <div style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin-bottom: 12px">Add a creator</div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start">
+              <div style="flex: 1 1 280px; min-width: 0">
+                <input class="input" placeholder="https://instagram.com/handle" value="{{ pickerInput }}" onChange="{{ onPickerInput }}" onKeyDown="{{ onPickerKey }}" />
+                <sc-if value="{{ pickerParsed }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size: 12px; margin-top: 8px; opacity: 0.65">Resolved: <strong>@{{ pickerParsed }}</strong></div>
+                </sc-if>
+              </div>
+              <button class="btn btn-primary" style="flex: none" onClick="{{ submitPicker }}">{{ pickerSubmitLabel }}</button>
+            </div>
+            <sc-if value="{{ pickerError }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size: 13px; color: #9b3d2e; margin-top: 12px">{{ pickerError }}</div>
+            </sc-if>
+          </div>
+        </sc-if>
         <div class="lens-creator-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px">
           <sc-for list="{{ creatorCards }}" as="person" hint-placeholder-count="2">
-            <div style="background: var(--color-surface); border-radius: 34px; padding: 30px; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg)" onClick="{{ person.open }}">
-              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 22px">
-                <div style="{{ person.mono }}">{{ person.initials }}</div>
-                <div>
+            <div style="background: var(--color-surface); border-radius: 34px; padding: 30px; transition: transform 0.25s ease, box-shadow 0.25s ease" style-hover="transform: translateY(-4px); box-shadow: var(--shadow-lg)">
+              <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 22px">
+                <div style="{{ person.mono }}; cursor: pointer" onClick="{{ person.open }}">{{ person.initials }}</div>
+                <div style="flex: 1; min-width: 0; cursor: pointer" onClick="{{ person.open }}">
                   <div style="font-family: var(--font-heading); font-size: 24px; line-height: 1.1">{{ person.name }}</div>
                   <div style="font-size: 13px; opacity: 0.55">{{ person.handle }}</div>
                 </div>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; flex: none" onClick="{{ person.remove }}">Remove</button>
               </div>
               <div style="display: flex; height: 10px; border-radius: 999px; overflow: hidden; margin-bottom: 12px">
                 <sc-for list="{{ person.mix }}" as="bar" hint-placeholder-count="3">
@@ -342,8 +402,8 @@
                   <span style="{{ mixchip.chip }}">{{ mixchip.label }}</span>
                 </sc-for>
               </div>
-              <p style="font-size: 14px; opacity: 0.75; margin: 0 0 20px">{{ person.blurb }}</p>
-              <div style="display: flex; gap: 20px">
+              <p style="font-size: 14px; opacity: 0.75; margin: 0 0 20px; cursor: pointer" onClick="{{ person.open }}">{{ person.blurb }}</p>
+              <div style="display: flex; gap: 20px; cursor: pointer" onClick="{{ person.open }}">
                 <sc-for list="{{ person.stats }}" as="pstat" hint-placeholder-count="3">
                   <div>
                     <div style="font-family: var(--font-heading); font-size: 22px">{{ pstat.value }}</div>
@@ -734,6 +794,7 @@
     </div>
   </sc-if>
   </sc-if>
+  </sc-if>
 
 </div>
 </x-dc>
@@ -769,7 +830,9 @@ const BRIEF_VERBS = {
 
 function dbCreatorToExport(row) {
   return {
+    id: row.id,
     username: row.handle,
+    status: row.status,
     name: row.display_name || row.handle,
     generatedAt: row.last_run_at,
     engine: '',
@@ -779,6 +842,13 @@ function dbCreatorToExport(row) {
     droppedSample: [],
     digest: row.digest || {}
   };
+}
+
+function parseHandle(input) {
+  const m = (input||'').trim().match(/instagram\.com\/([A-Za-z0-9._]+)/i);
+  let h = (m ? m[1] : (input||'').trim().replace(/^@/,'')).split(/[?#/]/)[0].toLowerCase();
+  if (['p','reel','reels','stories','explore','tv','s'].includes(h)) return null;
+  return /^[a-z0-9._]{1,30}$/.test(h) ? h : null;
 }
 
 class Component extends DCLogic {
@@ -791,7 +861,9 @@ class Component extends DCLogic {
     chatOpen: false, chatScope: { kind: 'all' }, messages: [], chatInput: '', chatBusy: false,
     chatNote: '', ready: false, hub: null, scopeHandles: null, hubError: '',
     session: null, authChecking: true, authMode: 'signin',
-    authEmail: '', authPassword: '', authError: '', authBusy: false
+    authEmail: '', authPassword: '', authError: '', authBusy: false,
+    screen: 'app', activeJob: null,
+    pickerInput: '', pickerParsed: null, pickerError: '', pickerBusy: false
   };
 
   scopeHandles() {
@@ -808,6 +880,7 @@ class Component extends DCLogic {
   componentDidMount() {
     this.applyTheme();
     this._hubStarted = false;
+    this._waitPoll = null;
     this._authReady = this.initAuth();
     window.addEventListener('popstate', () => this.parseHash());
   }
@@ -837,28 +910,46 @@ class Component extends DCLogic {
   }
 
   async loadHub() {
+    this.stopWaitPoll();
     this.setState({ ready: false, hub: null, scopeHandles: null, hubError: '' });
     try {
-      const hub = await this.fetchHub();
+      const creatorRows = await this.fetchCreatorRows();
+      const hub = await this.buildHubFromRows(creatorRows);
       const scopeHandles = hub.creators.map(c => c.username);
-      this.setState({ hub: hub, scopeHandles: scopeHandles, ready: true, hubError: '' }, () => this.parseHash());
+      const activeJob = await this.fetchDisplayJob(creatorRows);
+      const screen = this.determineScreen(creatorRows, activeJob);
+      this.setState({
+        hub: hub,
+        scopeHandles: scopeHandles,
+        ready: true,
+        hubError: '',
+        screen: screen,
+        activeJob: activeJob,
+        pickerInput: '',
+        pickerError: '',
+        pickerParsed: null,
+        pickerBusy: false
+      }, () => {
+        this.parseHash();
+        if (screen === 'waiting') this.startWaitPoll();
+      });
     } catch (e) {
       this._hubStarted = false;
       this.setState({ ready: false, hubError: 'Could not load your feed: ' + ((e && e.message) || e) });
     }
   }
 
-  async fetchHub() {
-    const sb = this.supabase;
-    const { data: picks, error: picksError } = await sb
+  async fetchCreatorRows() {
+    const { data: picks, error } = await this.supabase
       .from('user_creators')
       .select('creator_id, creators(*)');
-    if (picksError) throw picksError;
+    if (error) throw error;
+    return (picks || []).map(p => p.creators).filter(Boolean);
+  }
 
-    const creatorRows = (picks || []).map(p => p.creators).filter(Boolean);
+  async buildHubFromRows(creatorRows) {
     const creators = creatorRows.map(dbCreatorToExport);
-
-    const { data: reelRows, error: reelsError } = await sb
+    const { data: reelRows, error: reelsError } = await this.supabase
       .from('reels')
       .select('id, posted_at, payload')
       .order('posted_at', { ascending: false });
@@ -881,6 +972,228 @@ class Component extends DCLogic {
       products: [],
       collections: []
     };
+  }
+
+  determineScreen(creatorRows, activeJob) {
+    if (!creatorRows.length) return 'picker';
+    if (activeJob && activeJob.status !== 'done') return 'waiting';
+    if (creatorRows.some(c => c.status === 'ready')) return 'app';
+    if (creatorRows.some(c => c.status === 'queued' || c.status === 'processing')) return 'waiting';
+    return 'picker';
+  }
+
+  formatJobLine(job, handle) {
+    const h = handle || (job.creators && job.creators.handle) || job.handle || '';
+    const p = job.progress;
+    if (p && p.current != null && p.total != null) {
+      return 'Reading @' + h + ' — ' + p.current + ' of ' + p.total + ' reels';
+    }
+    if (job.status === 'failed') return '@' + h + ' could not be processed';
+    if (job.status === 'queued') return 'Queued @' + h + ' — waiting to start';
+    if (job.status === 'running') return 'Reading @' + h + '…';
+    return 'Processing @' + h + '…';
+  }
+
+  normalizeJob(job) {
+    const handle = (job.creators && job.creators.handle) || '';
+    return {
+      id: job.id,
+      status: job.status,
+      progress: job.progress,
+      error: job.error,
+      handle: handle,
+      line: this.formatJobLine(job, handle)
+    };
+  }
+
+  async fetchDisplayJob(creatorRows) {
+    if (!creatorRows.length) return null;
+    const ids = creatorRows.map(c => c.id);
+    const sb = this.supabase;
+    const { data: active, error: activeErr } = await sb
+      .from('jobs')
+      .select('id, status, progress, error, kind, creator_id, creators(handle, status)')
+      .in('creator_id', ids)
+      .in('status', ['queued', 'running'])
+      .order('created_at', { ascending: false })
+      .limit(1);
+    if (activeErr) throw activeErr;
+    if (active && active.length) return this.normalizeJob(active[0]);
+
+    const { data: failed, error: failedErr } = await sb
+      .from('jobs')
+      .select('id, status, progress, error, kind, creator_id, creators(handle, status)')
+      .in('creator_id', ids)
+      .eq('status', 'failed')
+      .order('created_at', { ascending: false })
+      .limit(1);
+    if (failedErr) throw failedErr;
+    if (failed && failed.length) return this.normalizeJob(failed[0]);
+    return null;
+  }
+
+  startWaitPoll() {
+    this.stopWaitPoll();
+    this.pollWaiting();
+    this._waitPoll = setInterval(() => this.pollWaiting(), 5000);
+  }
+
+  stopWaitPoll() {
+    if (this._waitPoll) {
+      clearInterval(this._waitPoll);
+      this._waitPoll = null;
+    }
+  }
+
+  async pollWaiting() {
+    try {
+      const creatorRows = await this.fetchCreatorRows();
+      const activeJob = await this.fetchDisplayJob(creatorRows);
+      if (!activeJob || activeJob.status === 'done') {
+        this.stopWaitPoll();
+        const hub = await this.buildHubFromRows(creatorRows);
+        const scopeHandles = hub.creators.map(c => c.username);
+        const screen = this.determineScreen(creatorRows, null);
+        this.setState({
+          hub: hub,
+          scopeHandles: scopeHandles,
+          ready: true,
+          activeJob: null,
+          screen: screen
+        }, () => this.parseHash());
+        return;
+      }
+      if (activeJob.status === 'failed') {
+        this.setState({ activeJob: activeJob, screen: 'waiting' });
+        return;
+      }
+      const hub = await this.buildHubFromRows(creatorRows);
+      this.setState({
+        hub: hub,
+        scopeHandles: hub.creators.map(c => c.username),
+        ready: true,
+        activeJob: activeJob,
+        screen: 'waiting'
+      });
+    } catch (e) {
+      /* keep polling */
+    }
+  }
+
+  creatorCount() {
+    return (this.state.scopeHandles || []).length;
+  }
+
+  onPickerInput(e) {
+    const pickerInput = e.target.value;
+    this.setState({ pickerInput: pickerInput, pickerParsed: parseHandle(pickerInput), pickerError: '' });
+  }
+
+  async addCreator(rawInput) {
+    if (this.state.pickerBusy) return;
+    const handle = parseHandle(rawInput || this.state.pickerInput);
+    if (!handle) {
+      this.setState({ pickerError: 'Paste a valid Instagram profile URL or handle.' });
+      return;
+    }
+    if ((this.state.scopeHandles || []).includes(handle)) {
+      this.setState({ pickerError: 'You are already following @' + handle + '.' });
+      return;
+    }
+    if (this.creatorCount() >= 4) {
+      this.setState({ pickerError: 'You can follow up to 4 creators.' });
+      return;
+    }
+
+    this.setState({ pickerBusy: true, pickerError: '' });
+    const sb = this.supabase;
+
+    try {
+      const { data: existing, error: lookupErr } = await sb
+        .from('creators')
+        .select('*')
+        .eq('handle', handle)
+        .maybeSingle();
+      if (lookupErr) throw lookupErr;
+
+      if (existing && existing.status === 'ready') {
+        const { error: pickErr } = await sb.from('user_creators').insert({ creator_id: existing.id });
+        if (pickErr) throw pickErr;
+        this._hubStarted = true;
+        await this.loadHub();
+        return;
+      }
+
+      let creatorId = existing && existing.id;
+      if (!creatorId) {
+        const { data: created, error: createErr } = await sb
+          .from('creators')
+          .insert({ handle: handle, status: 'queued' })
+          .select('*')
+          .single();
+        if (createErr) {
+          if (createErr.code === '23505') {
+            const { data: again } = await sb.from('creators').select('*').eq('handle', handle).single();
+            if (!again) throw createErr;
+            creatorId = again.id;
+          } else {
+            throw createErr;
+          }
+        } else {
+          creatorId = created.id;
+        }
+      }
+
+      const { error: pickErr } = await sb.from('user_creators').insert({ creator_id: creatorId });
+      if (pickErr) throw pickErr;
+
+      if (!existing || existing.status !== 'ready') {
+        const { data: openJobs } = await sb
+          .from('jobs')
+          .select('id')
+          .eq('creator_id', creatorId)
+          .eq('kind', 'backfill')
+          .in('status', ['queued', 'running'])
+          .limit(1);
+        if (!openJobs || !openJobs.length) {
+          const { error: jobErr } = await sb.from('jobs').insert({
+            creator_id: creatorId,
+            kind: 'backfill',
+            status: 'queued'
+          });
+          if (jobErr) throw jobErr;
+        }
+      }
+
+      this._hubStarted = true;
+      await this.loadHub();
+    } catch (e) {
+      this.setState({
+        pickerBusy: false,
+        pickerError: (e && e.message) || String(e)
+      });
+    }
+  }
+
+  async removeCreator(username) {
+    const c = this.hub.creators.find(x => x.username === username);
+    if (!c || !c.id) return;
+    const { error } = await this.supabase
+      .from('user_creators')
+      .delete()
+      .eq('creator_id', c.id);
+    if (error) {
+      this.setState({ pickerError: error.message });
+      return;
+    }
+    this._hubStarted = true;
+    await this.loadHub();
+  }
+
+  async dismissFailedJob() {
+    const job = this.state.activeJob;
+    if (job && job.handle) await this.removeCreator(job.handle);
+    else this.setState({ screen: 'picker', activeJob: null });
   }
 
   toggleAuthMode() {
@@ -915,9 +1228,11 @@ class Component extends DCLogic {
   }
 
   async signOut() {
+    this.stopWaitPoll();
     if (this.supabase) await this.supabase.auth.signOut();
     this.setState({
-      ready: false, hub: null, scopeHandles: null, hubError: '', chatOpen: false, reelId: null, route: 'feed'
+      ready: false, hub: null, scopeHandles: null, hubError: '', chatOpen: false, reelId: null,
+      route: 'feed', screen: 'app', activeJob: null, pickerInput: '', pickerParsed: null, pickerError: ''
     });
     this._hubStarted = false;
   }
@@ -1041,6 +1356,12 @@ class Component extends DCLogic {
 
   go(route) {
     this.setState({ route: route, reelId: null, topicKey: null, collectionKey: null }, () => {
+      this.pushHash();
+      window.scrollTo({ top: 0 });
+    });
+  }
+  viewFeed() {
+    this.setState({ screen: 'app', route: 'feed', reelId: null }, () => {
       this.pushHash();
       window.scrollTo({ top: 0 });
     });
@@ -1235,6 +1556,36 @@ class Component extends DCLogic {
     };
     if (authChecking || showAuth) return authVals;
 
+    const screen = st.screen || 'app';
+    const showApp = screen === 'app';
+    const showPicker = screen === 'picker';
+    const showWaiting = screen === 'waiting';
+    const slotCount = (st.scopeHandles || []).length;
+    const pickerBusy = st.pickerBusy;
+
+    authVals.showApp = showApp;
+    authVals.showPicker = showPicker;
+    authVals.showWaiting = showWaiting;
+    authVals.pickerInput = st.pickerInput;
+    authVals.pickerParsed = st.pickerParsed;
+    authVals.pickerError = st.pickerError;
+    authVals.pickerSubmitLabel = pickerBusy ? 'Adding…' : 'Add creator';
+    authVals.pickerSlotsLabel = slotCount + ' of 4 creators';
+    authVals.canAddCreator = slotCount < 4;
+    authVals.onPickerInput = (e) => this.onPickerInput(e);
+    authVals.onPickerKey = (e) => { if (e.key === 'Enter') this.addCreator(); };
+    authVals.submitPicker = () => this.addCreator();
+    authVals.dismissFailedJob = () => this.dismissFailedJob();
+    authVals.viewFeed = () => this.viewFeed();
+
+    const job = st.activeJob;
+    authVals.waitTitle = job && job.status === 'failed' ? 'Something went wrong' : 'Building your feed';
+    authVals.waitLine = (job && job.line) || 'This usually takes a few minutes the first time.';
+    authVals.waitError = job && job.status === 'failed' ? (job.error || 'The backfill failed.') : '';
+    authVals.waitHasFeed = showWaiting && this.hub.reels && this.hub.reels.length > 0;
+
+    if (showPicker || showWaiting) return authVals;
+
     const hub = this.hub;
     const reels = this.scopedReels(hub);
     const scopedCreators = this.scopeHandles()
@@ -1411,7 +1762,8 @@ class Component extends DCLogic {
           { value: this.num(c.counts.kept), label: 'on topic' },
           { value: this.num(c.counts.analysed), label: 'analysed' }
         ],
-        open: () => this.setState({ route: 'creator', creatorKey: c.username, cvAiOpen: false }, () => this.pushHash())
+        open: () => this.setState({ route: 'creator', creatorKey: c.username, cvAiOpen: false }, () => this.pushHash()),
+        remove: (e) => { e.stopPropagation(); this.removeCreator(c.username); }
       };
     });
 
