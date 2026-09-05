@@ -130,7 +130,10 @@ class WorkerClient(SupabasePublisher):
         claimed = self._patch("jobs", {"id": job["id"], "status": "queued"}, {"status": "running"})
         if not claimed:
             return None
-        return claimed[0]
+        result = claimed[0]
+        if job.get("creators"):
+            result["creators"] = job["creators"]
+        return result
 
     def update_job_progress(self, job_id: int, progress: dict) -> None:
         self._patch("jobs", {"id": job_id}, {"progress": progress})
@@ -314,6 +317,7 @@ def main() -> int:
     client = WorkerClient(base_url, secret_key)
     deadline = time.time() + MAX_RUNTIME_SEC
     processed = 0
+    failed = 0
 
     print("SignalFeed worker")
     print(f"  runtime limit: {MAX_RUNTIME_SEC // 3600}h")
@@ -332,13 +336,15 @@ def main() -> int:
             msg = f"pipeline command failed (exit {exc.returncode})"
             print(f"  ✗ {msg}", flush=True)
             client.fail_job(job["id"], job["creator_id"], msg)
+            failed += 1
         except Exception as exc:
             msg = str(exc) or exc.__class__.__name__
             print(f"  ✗ {msg}", flush=True)
             client.fail_job(job["id"], job["creator_id"], msg)
+            failed += 1
 
-    print(f"\nFinished — processed {processed} job(s).")
-    return 0
+    print(f"\nFinished — processed {processed} job(s), {failed} failed.")
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
