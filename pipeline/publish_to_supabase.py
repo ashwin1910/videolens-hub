@@ -21,11 +21,24 @@ from pathlib import Path
 
 import requests
 
+try:
+    import certifi
+except ImportError:
+    certifi = None  # type: ignore[assignment]
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
 BUCKET = "assets"
 ASSET_PREFIX = "assets/"
+
+
+def _ssl_verify() -> bool | str:
+    if os.environ.get("SUPABASE_SSL_VERIFY", "1").strip().lower() in ("0", "false", "no"):
+        return False
+    if certifi is not None:
+        return certifi.where()
+    return True
 
 
 def _load_dotenv(path: Path) -> None:
@@ -53,6 +66,7 @@ class SupabasePublisher:
     def __init__(self, base_url: str, secret_key: str) -> None:
         self.base = base_url.rstrip("/")
         self.secret_key = secret_key
+        self.verify = _ssl_verify()
         self.rest_headers = {
             "apikey": secret_key,
             "Authorization": f"Bearer {secret_key}",
@@ -79,7 +93,7 @@ class SupabasePublisher:
             "x-upsert": "true",
         }
         data = local_path.read_bytes()
-        resp = requests.post(url, headers=headers, data=data, timeout=120)
+        resp = requests.post(url, headers=headers, data=data, timeout=120, verify=self.verify)
         if resp.status_code not in (200, 201):
             raise RuntimeError(
                 f"storage upload failed for {storage_path}: "
@@ -105,7 +119,7 @@ class SupabasePublisher:
             **self.rest_headers,
             "Prefer": "resolution=merge-duplicates,return=representation",
         }
-        resp = requests.post(url, headers=headers, json=row, timeout=60)
+        resp = requests.post(url, headers=headers, json=row, timeout=60, verify=self.verify)
         if resp.status_code not in (200, 201):
             raise RuntimeError(
                 f"creator upsert failed for @{handle}: {resp.status_code} {resp.text[:300]}"
@@ -127,7 +141,7 @@ class SupabasePublisher:
             **self.rest_headers,
             "Prefer": "resolution=merge-duplicates",
         }
-        resp = requests.post(url, headers=headers, json=row, timeout=60)
+        resp = requests.post(url, headers=headers, json=row, timeout=60, verify=self.verify)
         if resp.status_code not in (200, 201, 204):
             raise RuntimeError(
                 f"reel upsert failed for {reel['id']}: {resp.status_code} {resp.text[:300]}"
