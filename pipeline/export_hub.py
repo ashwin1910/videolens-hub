@@ -15,7 +15,7 @@ import time
 from collections import Counter
 from pathlib import Path
 
-from language_gate import DEVANAGARI, check_hub_export
+from language_gate import DEVANAGARI, check_hub_export, scrub_devanagari
 from resolve_entities import lookup, run_resolution
 
 HERE = Path(__file__).resolve().parent
@@ -795,6 +795,12 @@ def main() -> int:
         "products": products,
         "collections": collections,
     }
+
+    dropped = scrub_devanagari(reels)
+    if dropped:
+        for line in dropped:
+            warn(f"Dropped Devanagari: {line}")
+        warn(f"dropped {len(dropped)} non-English evidence string(s)")
 
     dev_fail, roman_warn = check_hub_export(reels, review_path)
     if roman_warn:

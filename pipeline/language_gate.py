@@ -101,3 +101,38 @@ def check_hub_export(reels: list[dict], review_path: Path | None = None) -> tupl
     elif review_path and review_path.is_file():
         review_path.write_text("", encoding="utf-8")
     return dev_fail, roman_warn
+
+
+def _scrub_list(lst: list, path: str, rid: str, dropped: list[str]) -> None:
+    list_path = f"{path}[]" if path else "[]"
+    i = 0
+    while i < len(lst):
+        item = lst[i]
+        if isinstance(item, str):
+            if DEVANAGARI.search(item) and not _path_ok(list_path):
+                dropped.append(f"{rid}: {list_path}")
+                lst.pop(i)
+                continue
+        elif isinstance(item, dict):
+            _scrub_dict(item, list_path, rid, dropped)
+        elif isinstance(item, list):
+            _scrub_list(item, list_path, rid, dropped)
+        i += 1
+
+
+def _scrub_dict(obj: dict, path: str, rid: str, dropped: list[str]) -> None:
+    for key, val in list(obj.items()):
+        child_path = f"{path}.{key}" if path else key
+        if isinstance(val, list):
+            _scrub_list(val, child_path, rid, dropped)
+        elif isinstance(val, dict):
+            _scrub_dict(val, child_path, rid, dropped)
+
+
+def scrub_devanagari(reels: list[dict]) -> list[str]:
+    """Drop Devanagari strings that appear as list items on non-verbatim paths."""
+    dropped: list[str] = []
+    for reel in reels:
+        rid = reel.get("id", "?")
+        _scrub_dict(reel, "", rid, dropped)
+    return dropped
