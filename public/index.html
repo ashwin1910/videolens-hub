@@ -931,7 +931,7 @@ class Component extends DCLogic {
         pickerBusy: false
       }, () => {
         this.parseHash();
-        if (screen === 'waiting') this.startWaitPoll();
+        if (this.shouldJobPoll(screen, activeJob)) this.startWaitPoll();
       });
     } catch (e) {
       this._hubStarted = false;
@@ -976,15 +976,23 @@ class Component extends DCLogic {
 
   determineScreen(creatorRows, activeJob) {
     if (!creatorRows.length) return 'picker';
-    if (activeJob && activeJob.status !== 'done') return 'waiting';
     if (creatorRows.some(c => c.status === 'ready')) return 'app';
+    if (activeJob && activeJob.status !== 'done') return 'waiting';
     if (creatorRows.some(c => c.status === 'queued' || c.status === 'processing')) return 'waiting';
     return 'picker';
+  }
+
+  shouldJobPoll(screen, activeJob) {
+    if (screen === 'waiting') return true;
+    return !!(activeJob && (activeJob.status === 'queued' || activeJob.status === 'running'));
   }
 
   formatJobLine(job, handle) {
     const h = handle || (job.creators && job.creators.handle) || job.handle || '';
     const p = job.progress;
+    if (job.status === 'queued' && p && p.phase === 'daily_cap') {
+      return 'Daily processing limit reached — @' + h + ' will start tomorrow';
+    }
     if (p && p.current != null && p.total != null) {
       return 'Reading @' + h + ' — ' + p.current + ' of ' + p.total + ' reels';
     }
@@ -1015,6 +1023,7 @@ class Component extends DCLogic {
       .select('id, status, progress, error, kind, creator_id, creators(handle, status)')
       .in('creator_id', ids)
       .in('status', ['queued', 'running'])
+      .is('dismissed_at', null)
       .order('created_at', { ascending: false })
       .limit(1);
     if (activeErr) throw activeErr;
@@ -1025,6 +1034,7 @@ class Component extends DCLogic {
       .select('id, status, progress, error, kind, creator_id, creators(handle, status)')
       .in('creator_id', ids)
       .eq('status', 'failed')
+      .is('dismissed_at', null)
       .order('created_at', { ascending: false })
       .limit(1);
     if (failedErr) throw failedErr;
@@ -1049,32 +1059,17 @@ class Component extends DCLogic {
     try {
       const creatorRows = await this.fetchCreatorRows();
       const activeJob = await this.fetchDisplayJob(creatorRows);
-      if (!activeJob || activeJob.status === 'done') {
-        this.stopWaitPoll();
-        const hub = await this.buildHubFromRows(creatorRows);
-        const scopeHandles = hub.creators.map(c => c.username);
-        const screen = this.determineScreen(creatorRows, null);
-        this.setState({
-          hub: hub,
-          scopeHandles: scopeHandles,
-          ready: true,
-          activeJob: null,
-          screen: screen
-        }, () => this.parseHash());
-        return;
-      }
-      if (activeJob.status === 'failed') {
-        this.setState({ activeJob: activeJob, screen: 'waiting' });
-        return;
-      }
       const hub = await this.buildHubFromRows(creatorRows);
+      const scopeHandles = hub.creators.map(c => c.username);
+      const screen = this.determineScreen(creatorRows, activeJob);
+      if (!this.shouldJobPoll(screen, activeJob)) this.stopWaitPoll();
       this.setState({
         hub: hub,
-        scopeHandles: hub.creators.map(c => c.username),
+        scopeHandles: scopeHandles,
         ready: true,
-        activeJob: activeJob,
-        screen: 'waiting'
-      });
+        activeJob: activeJob && activeJob.status !== 'done' ? activeJob : null,
+        screen: screen
+      }, () => this.parseHash());
     } catch (e) {
       /* keep polling */
     }
@@ -1126,6 +1121,18 @@ class Component extends DCLogic {
 
       let creatorId = existing && existing.id;
       if (!creatorId) {
+        const { count: libraryCount, error: countErr } = await sb
+          .from('creators')
+          .select('*', { count: 'exact', head: true });
+        if (countErr) throw countErr;
+        if ((libraryCount || 0) >= 60) {
+          this.setState({
+            pickerBusy: false,
+            pickerError: 'The library is full for now. Try a creator we already have.'
+          });
+          return;
+        }
+
         const { data: created, error: createErr } = await sb
           .from('creators')
           .insert({ handle: handle, status: 'queued' })
@@ -1168,9 +1175,15 @@ class Component extends DCLogic {
       this._hubStarted = true;
       await this.loadHub();
     } catch (e) {
+      const msg = (e && e.message) || String(e);
+      const friendly = msg.indexOf('creator limit reached') >= 0
+        ? 'You can follow up to 4 creators.'
+        : msg.indexOf('library full') >= 0
+          ? 'The library is full for now. Try a creator we already have.'
+          : msg;
       this.setState({
         pickerBusy: false,
-        pickerError: (e && e.message) || String(e)
+        pickerError: friendly
       });
     }
   }
@@ -1192,8 +1205,20 @@ class Component extends DCLogic {
 
   async dismissFailedJob() {
     const job = this.state.activeJob;
-    if (job && job.handle) await this.removeCreator(job.handle);
-    else this.setState({ screen: 'picker', activeJob: null });
+    if (!job || !job.id) {
+      this.setState({ screen: 'picker', activeJob: null });
+      return;
+    }
+    const { error } = await this.supabase
+      .from('jobs')
+      .update({ dismissed_at: new Date().toISOString() })
+      .eq('id', job.id);
+    if (error) {
+      this.setState({ pickerError: 'Could not dismiss this job. Try again.' });
+      return;
+    }
+    if (job.handle) await this.removeCreator(job.handle);
+    else await this.loadHub();
   }
 
   toggleAuthMode() {
@@ -1581,7 +1606,9 @@ class Component extends DCLogic {
     const job = st.activeJob;
     authVals.waitTitle = job && job.status === 'failed' ? 'Something went wrong' : 'Building your feed';
     authVals.waitLine = (job && job.line) || 'This usually takes a few minutes the first time.';
-    authVals.waitError = job && job.status === 'failed' ? (job.error || 'The backfill failed.') : '';
+    authVals.waitError = job && job.status === 'failed'
+      ? 'We could not finish building this creator. Try a different handle.'
+      : '';
     authVals.waitHasFeed = showWaiting && this.hub.reels && this.hub.reels.length > 0;
 
     if (showPicker || showWaiting) return authVals;

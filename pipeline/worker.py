@@ -32,6 +32,8 @@ from publish_to_supabase import (  # noqa: E402
 
 MAX_RUNTIME_SEC = 5 * 60 * 60
 PROGRESS_POLL_SEC = 15
+MAX_DAILY_BACKFILLS = 30
+MAX_GLOBAL_CREATORS = 60
 
 
 class WorkerClient(SupabasePublisher):
@@ -107,6 +109,24 @@ class WorkerClient(SupabasePublisher):
                 )
         return inserted
 
+    def count_backfills_started_24h(self) -> int:
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+        resp = requests.get(
+            f"{self.base}/rest/v1/jobs",
+            headers=self.rest_headers,
+            params={
+                "select": "id",
+                "kind": "eq.backfill",
+                "status": "in.(running,done,failed)",
+                "created_at": f"gte.{cutoff}",
+            },
+            timeout=60,
+            verify=self.verify,
+        )
+        if resp.status_code != 200:
+            raise RuntimeError(f"jobs count failed: {resp.status_code} {resp.text[:300]}")
+        return len(resp.json())
+
     def claim_job(self) -> dict | None:
         resp = requests.get(
             f"{self.base}/rest/v1/jobs",
@@ -115,7 +135,7 @@ class WorkerClient(SupabasePublisher):
                 "select": "id,creator_id,kind,status,created_at,creators(handle)",
                 "status": "eq.queued",
                 "order": "created_at.asc",
-                "limit": "1",
+                "limit": "50",
             },
             timeout=60,
             verify=self.verify,
@@ -126,14 +146,23 @@ class WorkerClient(SupabasePublisher):
         if not rows:
             return None
 
-        job = rows[0]
-        claimed = self._patch("jobs", {"id": job["id"], "status": "queued"}, {"status": "running"})
-        if not claimed:
-            return None
-        result = claimed[0]
-        if job.get("creators"):
-            result["creators"] = job["creators"]
-        return result
+        backfill_cap = self.count_backfills_started_24h() >= MAX_DAILY_BACKFILLS
+        for job in rows:
+            if job.get("kind") == "backfill" and backfill_cap:
+                try:
+                    self.update_job_progress(job["id"], {"phase": "daily_cap"})
+                except Exception as exc:
+                    print(f"  ! daily-cap notice failed for job {job['id']}: {exc}")
+                continue
+
+            claimed = self._patch("jobs", {"id": job["id"], "status": "queued"}, {"status": "running"})
+            if not claimed:
+                continue
+            result = claimed[0]
+            if job.get("creators"):
+                result["creators"] = job["creators"]
+            return result
+        return None
 
     def update_job_progress(self, job_id: int, progress: dict) -> None:
         self._patch("jobs", {"id": job_id}, {"progress": progress})
