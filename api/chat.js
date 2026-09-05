@@ -9,6 +9,8 @@
  * Response: { reply: string }
  */
 
+import { createClient } from "@supabase/supabase-js";
+
 const MODEL = process.env.OPENAI_CHAT_MODEL || "gpt-4o-mini";
 
 // The archive is machine-generated description, so the assistant is told to
@@ -28,18 +30,63 @@ const SYSTEM = [
 // Generous enough for the whole archive, small enough to bound cost per call.
 const MAX_CHARS = 120000;
 
+function missingEnv(name) {
+  return (
+    `${name} is not set on the server. Add it under Vercel → ` +
+    "Project → Settings → Environment Variables, then redeploy."
+  );
+}
+
+function bearerToken(req) {
+  const header = req.headers.authorization || req.headers.Authorization || "";
+  const match = header.match(/^Bearer\s+(\S+)/i);
+  return match ? match[1] : null;
+}
+
+async function verifyUser(token) {
+  const url = process.env.SUPABASE_URL;
+  const secret = process.env.SUPABASE_SECRET_KEY;
+  const supabase = createClient(url, secret, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data?.user) return null;
+  return data.user;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Use POST." });
   }
 
+  const token = bearerToken(req);
+  if (!token) {
+    return res.status(401).json({ error: "Sign in required." });
+  }
+
+  if (!process.env.SUPABASE_URL) {
+    return res.status(503).json({ error: missingEnv("SUPABASE_URL") });
+  }
+  if (!process.env.SUPABASE_SECRET_KEY) {
+    return res.status(503).json({ error: missingEnv("SUPABASE_SECRET_KEY") });
+  }
+
+  let user;
+  try {
+    user = await verifyUser(token);
+  } catch (err) {
+    console.error("auth verification failed", err);
+    return res.status(401).json({ error: "Sign in required." });
+  }
+  if (!user) {
+    return res.status(401).json({ error: "Sign in required." });
+  }
+
   const key = process.env.OPENAI_API_KEY;
   if (!key) {
     return res.status(503).json({
-      error:
-        "OPENAI_API_KEY is not set on the server. Add it under Vercel → " +
-        "Project → Settings → Environment Variables, then redeploy.",
+      error: missingEnv("OPENAI_API_KEY"),
     });
   }
 

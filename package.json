@@ -4,6 +4,9 @@
   "private": true,
   "description": "Lens — an archive of analysed Instagram fitness and nutrition reels, with the pipeline that builds it.",
   "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1"
+  },
   "engines": {
     "node": ">=18"
   },

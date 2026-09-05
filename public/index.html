@@ -23,12 +23,21 @@
      page logic below stays exactly as designed. */
   window.claude = {
     complete: async ({ system, messages }) => {
+      const sb = window.__supabase;
+      if (!sb) throw new Error('please sign in again');
+      const { data: { session } } = await sb.auth.getSession();
+      const token = session && session.access_token;
+      if (!token) throw new Error('please sign in again');
       const res = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
         body: JSON.stringify({ system, messages })
       });
       if (!res.ok) {
+        if (res.status === 401) throw new Error('please sign in again');
         const detail = await res.text().catch(() => "");
         throw new Error("chat " + res.status + ": " + detail.slice(0, 200));
       }
@@ -1541,9 +1550,11 @@ class Component extends DCLogic {
       this.setState(s => ({ messages: s.messages.concat([{ role: 'bot', text: botText }]), chatBusy: false, chatNote: ctx.note }));
     } catch (e) {
       const why = String((e && e.message) || e || '');
-      const errText = /\b401\b|\b403\b/.test(why)
-        ? 'The assistant is not configured — OPENAI_API_KEY is missing or rejected on the server.'
-        : 'Could not reach the assistant just now. ' + (why ? '(' + why + ')' : '');
+      const errText = /sign in again/i.test(why) || /\b401\b/.test(why)
+        ? 'Please sign in again.'
+        : /\b403\b/.test(why)
+          ? 'The assistant is not configured — OPENAI_API_KEY is missing or rejected on the server.'
+          : 'Could not reach the assistant just now.' + (why ? ' (' + why + ')' : '');
       this.setState(s => ({ messages: s.messages.concat([{ role: 'bot', text: errText }]), chatBusy: false }));
     }
   }
