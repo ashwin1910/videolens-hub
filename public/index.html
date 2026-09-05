@@ -62,7 +62,6 @@
     @keyframes lensIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes lensSlide { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
   </style>
-  <script src="hub-data.js"></script>
 </helmet>
 
 <div style="min-height: 100vh; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding-bottom: 80px">
@@ -768,6 +767,20 @@ const BRIEF_VERBS = {
   nutrition_note: 'Know', product_rank: 'Buy', mindset: 'Know', other: 'Know'
 };
 
+function dbCreatorToExport(row) {
+  return {
+    username: row.handle,
+    name: row.display_name || row.handle,
+    generatedAt: row.last_run_at,
+    engine: '',
+    counts: row.counts || {},
+    buckets: ['fitness', 'nutrition'],
+    mode: 'top-n',
+    droppedSample: [],
+    digest: row.digest || {}
+  };
+}
+
 class Component extends DCLogic {
   state = {
     route: 'feed', reelId: null, topicKey: null, creatorKey: null, collectionKey: null,
@@ -776,18 +789,14 @@ class Component extends DCLogic {
     captionShowOriginal: false,
     rvAiOpen: false, rvCraftOpen: false, rvCaptionOpen: false, cvAiOpen: false,
     chatOpen: false, chatScope: { kind: 'all' }, messages: [], chatInput: '', chatBusy: false,
-    chatNote: '', ready: false,
+    chatNote: '', ready: false, hub: null, scopeHandles: null, hubError: '',
     session: null, authChecking: true, authMode: 'signin',
     authEmail: '', authPassword: '', authError: '', authBusy: false
   };
 
   scopeHandles() {
-    try {
-      const raw = localStorage.getItem('lens.creators');
-      if (!raw) return null;
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) && arr.length ? arr : null;
-    } catch (e) { return null; }
+    const scope = this.state.scopeHandles;
+    return scope && scope.length ? scope : null;
   }
 
   scopedReels(hub) {
@@ -824,12 +833,54 @@ class Component extends DCLogic {
   startHub() {
     if (this._hubStarted) return;
     this._hubStarted = true;
-    const tick = () => {
-      if (window.HUB) {
-        this.setState({ ready: true }, () => this.parseHash());
-      } else setTimeout(tick, 60);
+    this.loadHub();
+  }
+
+  async loadHub() {
+    this.setState({ ready: false, hub: null, scopeHandles: null, hubError: '' });
+    try {
+      const hub = await this.fetchHub();
+      const scopeHandles = hub.creators.map(c => c.username);
+      this.setState({ hub: hub, scopeHandles: scopeHandles, ready: true, hubError: '' }, () => this.parseHash());
+    } catch (e) {
+      this._hubStarted = false;
+      this.setState({ ready: false, hubError: 'Could not load your feed: ' + ((e && e.message) || e) });
+    }
+  }
+
+  async fetchHub() {
+    const sb = this.supabase;
+    const { data: picks, error: picksError } = await sb
+      .from('user_creators')
+      .select('creator_id, creators(*)');
+    if (picksError) throw picksError;
+
+    const creatorRows = (picks || []).map(p => p.creators).filter(Boolean);
+    const creators = creatorRows.map(dbCreatorToExport);
+
+    const { data: reelRows, error: reelsError } = await sb
+      .from('reels')
+      .select('id, posted_at, payload')
+      .order('posted_at', { ascending: false });
+    if (reelsError) throw reelsError;
+
+    const reels = (reelRows || []).map(row => row.payload).filter(Boolean);
+    reels.sort((a, b) => String(b.timestamp || '').localeCompare(String(a.timestamp || '')));
+
+    let generatedAt = '';
+    creators.forEach(c => {
+      const t = c.generatedAt || '';
+      if (t > generatedAt) generatedAt = t;
+    });
+
+    return {
+      generatedAt: generatedAt,
+      creators: creators,
+      reels: reels,
+      playbook: [],
+      products: [],
+      collections: []
     };
-    tick();
   }
 
   toggleAuthMode() {
@@ -865,7 +916,9 @@ class Component extends DCLogic {
 
   async signOut() {
     if (this.supabase) await this.supabase.auth.signOut();
-    this.setState({ ready: false, chatOpen: false, reelId: null, route: 'feed' });
+    this.setState({
+      ready: false, hub: null, scopeHandles: null, hubError: '', chatOpen: false, reelId: null, route: 'feed'
+    });
     this._hubStarted = false;
   }
   componentDidUpdate() { this.applyTheme(); }
@@ -891,7 +944,11 @@ class Component extends DCLogic {
     ramp('accent-2', accent2);
   }
 
-  get hub() { return (this.state.ready && window.HUB) || { creators: [], reels: [] }; }
+  get hub() {
+    return (this.state.ready && this.state.hub) || {
+      creators: [], reels: [], playbook: [], products: [], collections: []
+    };
+  }
   creator(u) { return this.hub.creators.find(c => c.username === u) || { username: u, name: u, counts: {} }; }
   initials(u) {
     const c = this.creator(u);
@@ -964,7 +1021,7 @@ class Component extends DCLogic {
 
   parseHash() {
     const h = (location.hash || '').replace(/^#/, '');
-    if (!h || !window.HUB) return;
+    if (!h || !this.state.ready) return;
     const parts = h.split('/');
     if (parts[0] === 'reel' && parts[1]) {
       this.setState({ reelId: parts[1], rvAiOpen: false, rvCraftOpen: false });
@@ -1102,7 +1159,7 @@ class Component extends DCLogic {
           r.id + ' @' + r.creator + ' [' + (r.type || '') + '] ' + (r.title || '') + ' — ' + (r.takeaway || '')
         );
         const text = lines.join('\n');
-        const note = total < (window.HUB && window.HUB.reels ? window.HUB.reels.length : total)
+        const note = total < (this.hub.reels ? this.hub.reels.length : total)
           ? 'Included ' + total + ' reels in scope.'
           : '';
         return { text: text, note: note, count: total };
@@ -1213,7 +1270,11 @@ class Component extends DCLogic {
 
     const totScraped = hub.creators.reduce((a, c) => a + (c.counts.scraped || 0), 0);
     const totKept = hub.creators.reduce((a, c) => a + (c.counts.kept || 0), 0);
-    vals.runStamp = hub.generatedAt ? 'Last run ' + hub.generatedAt.slice(0, 10) + ' · ' + scopedCreators.map(c => '@' + c.username).join('  ') : 'Loading run…';
+    vals.runStamp = st.hubError
+      ? st.hubError
+      : (hub.generatedAt
+        ? 'Last run ' + hub.generatedAt.slice(0, 10) + ' · ' + scopedCreators.map(c => '@' + c.username).join('  ')
+        : (st.ready ? 'No creators yet' : 'Loading your feed…'));
     vals.heroLine = 'What they cooked, lifted and ran this month — written out, tagged and searchable. Nothing to watch unless you want to.';
     const latest = reels[0];
     if (latest) {
